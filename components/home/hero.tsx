@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SearchBar } from "@/components/home/search-bar";
-import { ArrowRightIcon, StarIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, MapIcon } from "@/components/ui/icons";
 import { heroImage, stats } from "@/lib/data";
 
 export function Hero() {
@@ -21,37 +21,33 @@ export function Hero() {
 
       <div className="page-x relative pt-36 pb-16 sm:pt-44 lg:pt-52 lg:pb-24">
         <div className="max-w-3xl animate-rise">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 py-1.5 pr-4 pl-1.5 text-sm font-medium text-white ring-1 ring-white/25 backdrop-blur-sm">
-            <span className="flex items-center gap-1 rounded-full bg-sunset-400 px-2.5 py-0.5 text-xs font-bold text-sand-900">
-              <StarIcon className="size-3" />
-              4.9
-            </span>
-            Rated by 48,000 travellers
+          <span className="text-sm font-semibold tracking-[0.2em] text-sunset-200 uppercase">
+            Cambodia
           </span>
 
           <h1 className="mt-6 font-display text-4xl leading-[1.05] font-semibold tracking-tight text-balance text-white sm:text-6xl lg:text-7xl">
-            Journeys worth the jet lag.
+            Discover Cambodia&apos;s Hidden Gems
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-pretty text-white/80">
-            Small-group tours and tailor-made escapes across 92 countries —
-            routed, tested and priced up front by specialists who have actually
-            walked them.
+            Ten tourism regions, twenty-five provinces, and curated corridors —
+            with verified place details, maps, and trusted local contacts.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="#packages"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-brand-800 shadow-lg shadow-brand-950/25 transition-all hover:-translate-y-0.5 hover:bg-sand-100"
+              href="/explore"
+              className="btn-sweep group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold shadow-lg shadow-brand-950/30 transition-all hover:-translate-y-0.5"
             >
-              Browse tour packages
+              Start exploring
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              href="#destinations"
-              className="inline-flex items-center justify-center rounded-full border border-white/35 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              href="/map"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
-              See destinations
+              <MapIcon className="size-4" />
+              Open the map
             </Link>
           </div>
         </div>

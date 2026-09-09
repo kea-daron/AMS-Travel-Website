@@ -5,40 +5,46 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
 
-  /* Brand — deep ocean teal */
-  --color-brand-50: #f0fdfa;
-  --color-brand-100: #d7f7f0;
-  --color-brand-200: #b0eee2;
-  --color-brand-300: #7bdfd0;
-  --color-brand-400: #45c8b8;
-  --color-brand-500: #21ac9d;
-  --color-brand-600: #148a7f;
-  --color-brand-700: #136e67;
-  --color-brand-800: #145854;
-  --color-brand-900: #144946;
-  --color-brand-950: #042f2e;
+  /* Brand — indigo, from the cool end of the logo gradient (#443c84) */
+  --color-brand-50: #f4f3fb;
+  --color-brand-100: #e8e6f6;
+  --color-brand-200: #d2cfed;
+  --color-brand-300: #b3aede;
+  --color-brand-400: #8f88c9;
+  --color-brand-500: #6f66ae;
+  --color-brand-600: #574d92;
+  --color-brand-700: #443c84;
+  --color-brand-800: #39326b;
+  --color-brand-900: #302b57;
+  --color-brand-950: #1c1935;
 
-  /* Accent — sunset */
-  --color-sunset-50: #fff7ed;
-  --color-sunset-100: #ffedd5;
-  --color-sunset-200: #fed7aa;
-  --color-sunset-300: #fdba74;
-  --color-sunset-400: #fb923c;
-  --color-sunset-500: #f97316;
-  --color-sunset-600: #ea580c;
-  --color-sunset-700: #c2410c;
+  /* Accent — crimson, from the warm end of the logo gradient (#c12938) */
+  --color-sunset-50: #fdf3f4;
+  --color-sunset-100: #fbe4e6;
+  --color-sunset-200: #f6c8cd;
+  --color-sunset-300: #eda0a8;
+  --color-sunset-400: #e0707e;
+  --color-sunset-500: #cf4356;
+  --color-sunset-600: #c12938;
+  --color-sunset-700: #a11f2d;
+  --color-sunset-800: #851c28;
+  --color-sunset-900: #711c26;
+  --color-sunset-950: #3e0c11;
 
-  /* Neutrals — warm sand */
-  --color-sand-50: #fbfaf8;
-  --color-sand-100: #f4f1ec;
-  --color-sand-200: #e7e2da;
-  --color-sand-300: #d3ccc0;
-  --color-sand-400: #a89f92;
-  --color-sand-500: #7c7367;
-  --color-sand-600: #5c554c;
-  --color-sand-700: #433e37;
-  --color-sand-800: #2b2823;
-  --color-sand-900: #1a1815;
+  /* Neutrals — cool grey, tinted towards the brand rather than beige */
+  --color-sand-50: #fbfafc;
+  --color-sand-100: #f3f2f6;
+  --color-sand-200: #e6e4ec;
+  --color-sand-300: #d0ccd8;
+  --color-sand-400: #a09aac;
+  --color-sand-500: #6f6979;
+  --color-sand-600: #524d5f;
+  --color-sand-700: #3c3847;
+  --color-sand-800: #282531;
+  --color-sand-900: #181620;
+
+  /* The logo sweep itself: crimson → plum → indigo */
+  --color-plum-600: #86305a;
 
   /* Motion */
   --animate-rise: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -103,3 +109,39 @@
     padding-inline: 3rem;
   }
 }
+
+/* The logo's own gradient, for hero-scale surfaces. */
+@utility brand-sweep {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-sunset-600) 0%,
+    var(--color-plum-600) 52%,
+    var(--color-brand-700) 100%
+  );
+}
+
+/*
+ * Filled buttons carry the logo's two-colour mix. The gradient is drawn wider
+ * than the button and slid on hover, which reads as a sweep rather than a
+ * flat colour swap.
+ */
+@utility btn-sweep {
+  background-image: linear-gradient(
+    115deg,
+    var(--color-sunset-600) 0%,
+    var(--color-plum-600) 50%,
+    var(--color-brand-700) 100%
+  );
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color: #fff;
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background-position: 100% 50%;
+  }
+}
+

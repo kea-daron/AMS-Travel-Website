@@ -128,6 +128,189 @@ export function MailIcon(props: IconProps) {
   );
 }
 
+export function ExternalLinkIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M14 4.5h5.5V10" />
+      <path d="M19.5 4.5 11 13" />
+      <path d="M19 14v4.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5" />
+    </Outline>
+  );
+}
+
+export function LockIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 14.5v2" />
+    </Outline>
+  );
+}
+
+export function EyeIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M2.5 12S6.1 5.5 12 5.5 21.5 12 21.5 12 17.9 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </Outline>
+  );
+}
+
+export function EyeOffIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="m4 4 16 16" />
+      <path d="M9.9 5.8A9.9 9.9 0 0 1 12 5.5c5.9 0 9.5 6.5 9.5 6.5a17.6 17.6 0 0 1-2.5 3.4M6.6 7.4A17.4 17.4 0 0 0 2.5 12S6.1 18.5 12 18.5c1.3 0 2.6-.3 3.7-.8" />
+      <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+    </Outline>
+  );
+}
+
+export function CityIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M3.5 20.5V11l5-3v12.5M8.5 20.5V6l6-3v17.5M14.5 20.5V10l6 3v7.5M2.5 20.5h19" />
+      <path d="M11 8.5v.01M11 12v.01M11 15.5v.01" />
+    </Outline>
+  );
+}
+
+export function ColumnsIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M4 8.5h16L12 3.5 4 8.5Z" />
+      <path d="M6.5 8.5V16M12 8.5v9M17.5 8.5V13" />
+      <path d="M3.5 20.5h17" />
+    </Outline>
+  );
+}
+
+export function MuseumIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M3 9.5h18L12 4 3 9.5Z" />
+      <path d="M6 9.5v8M10 9.5v8M14 9.5v8M18 9.5v8M3.5 17.5h17M2.5 20.5h19" />
+    </Outline>
+  );
+}
+
+export function TrendingUpIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="m3.5 16.5 6-6 3.5 3.5 7.5-7.5" />
+      <path d="M15 6.5h5.5V12" />
+    </Outline>
+  );
+}
+
+export function BookmarkIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4.2-6.5 4.2v-16a1 1 0 0 1 1-1Z" />
+    </Outline>
+  );
+}
+
+export function TempleIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M12 3 4 8h16l-8-5Z" />
+      <path d="M6.5 8v8.5M12 8v8.5M17.5 8v8.5M3.5 16.5h17M2.5 20.5h19" />
+    </Outline>
+  );
+}
+
+export function MountainIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M2.5 19.5h19L14 6.5l-4.2 7.3-2.1-2.4-5.2 8.1Z" />
+      <path d="m11.6 11.2 2.4-1.4 2.4 1.4" />
+    </Outline>
+  );
+}
+
+export function WaterIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M2.5 8c2-1.8 4-1.8 6 0s4 1.8 6 0 4-1.8 5.5 0" />
+      <path d="M2.5 13c2-1.8 4-1.8 6 0s4 1.8 6 0 4-1.8 5.5 0" />
+      <path d="M2.5 18c2-1.8 4-1.8 6 0s4 1.8 6 0 4-1.8 5.5 0" />
+    </Outline>
+  );
+}
+
+export function PalmIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M13.4 10.2C12.3 13.6 12 17.3 12 21" />
+      <path d="M13.4 10.2c-2.4-2.6-5.9-2.9-8.6-.7M13.4 10.2c.6-3.5 3.4-5.6 6.9-5M13.4 10.2c3 .1 5.2 2 6 5" />
+      <path d="M6.5 21h11" />
+    </Outline>
+  );
+}
+
+export function MoonIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M20.5 15.2A8.6 8.6 0 0 1 9.3 4a8.6 8.6 0 1 0 11.2 11.2Z" />
+    </Outline>
+  );
+}
+
+export function UtensilsIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M7 3v18M4.4 3v5.2a2.6 2.6 0 0 0 5.2 0V3" />
+      <path d="M17 21v-6.6c2 0 3.2-1.2 3.2-4.4C20.2 6.5 19 3 17 3s-3.2 3.5-3.2 7c0 3.2 1.2 4.4 3.2 4.4Z" />
+    </Outline>
+  );
+}
+
+export function LeafIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M20.5 3.5c.6 8.6-4.4 14.2-10.4 14.2a5.6 5.6 0 0 1-5.6-5.6C4.5 6.6 12 3 20.5 3.5Z" />
+      <path d="M4 20.5c1.6-5.6 5.6-9.7 10.6-12.2" />
+    </Outline>
+  );
+}
+
+export function DiamondIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M6.2 3.5h11.6l3.7 6L12 20.5 2.5 9.5l3.7-6Z" />
+      <path d="M2.5 9.5h19M9.2 3.5 6.8 9.5 12 20.5M14.8 3.5l2.4 6L12 20.5" />
+    </Outline>
+  );
+}
+
+export function MapIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M9 4.5 3.5 6.75v12.75L9 17.25l6 2.25 5.5-2.25V4.5L15 6.75 9 4.5Z" />
+      <path d="M9 4.5v12.75M15 6.75V19.5" />
+    </Outline>
+  );
+}
+
+export function GlobeIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.3 3.3 8.5s-1.1 6.1-3.3 8.5c-2.2-2.4-3.3-5.3-3.3-8.5S9.8 5.9 12 3.5Z" />
+    </Outline>
+  );
+}
+
+export function UserIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="12" cy="8.25" r="3.75" />
+      <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
+    </Outline>
+  );
+}
+
 export function MenuIcon(props: IconProps) {
   return (
     <Outline {...props}>

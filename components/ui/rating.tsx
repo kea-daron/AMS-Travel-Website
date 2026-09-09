@@ -17,7 +17,7 @@ export function Rating({
           <StarIcon
             key={i}
             className={`size-3.5 ${
-              i < Math.round(value) ? "text-sunset-400" : "text-current opacity-25"
+              i < Math.round(value) ? "text-sunset-500" : "text-current opacity-25"
             }`}
           />
         ))}

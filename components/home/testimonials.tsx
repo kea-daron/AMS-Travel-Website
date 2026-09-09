@@ -19,8 +19,8 @@ export function Testimonials() {
       <div className="page-x">
         <SectionHeading
           eyebrow="Traveller reviews"
-          title="The part of the trip nobody plans for"
-          description="Anyone can sell a good week of weather. These are the reviews we care about — the ones written after something went wrong."
+          title="What travellers said once they got there"
+          description="The reviews worth reading are the ones written after the plan met reality — a road washed out, a ferry time, a village that turned out to be worth the detour."
           align="center"
           tone="light"
         />

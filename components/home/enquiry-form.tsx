@@ -39,7 +39,7 @@ export function EnquiryForm() {
           id="enquiry-destination"
           type="text"
           name="destination"
-          placeholder="Where to?"
+          placeholder="Which province?"
           className="w-full rounded-full bg-white/10 px-5 py-3.5 text-sm text-white ring-1 ring-white/25 outline-none placeholder:text-white/50 focus:ring-2 focus:ring-white/60 sm:w-40 sm:bg-transparent sm:ring-0 sm:focus:ring-0"
         />
 

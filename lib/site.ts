@@ -1,8 +1,8 @@
 export const site = {
   name: "AMS Travel",
-  tagline: "Journeys worth the jet lag.",
+  tagline: "Discover Cambodia's hidden gems.",
   description:
-    "AMS Travel designs small-group tours, island escapes and tailor-made itineraries to 90+ countries, planned end to end by people who have actually been there.",
+    "Cambodia by tourism region, interest, province, and curated corridor — with verified destination details and trusted local contacts.",
   phone: "+1 (415) 555-0142",
   email: "hello@amstravel.com",
   address: "218 Harbour Lane, Suite 40, Amsterdam, NL",
@@ -10,41 +10,44 @@ export const site = {
 
 export const mainNav = [
   { label: "Home", href: "/" },
-  { label: "Destinations", href: "#destinations" },
-  { label: "Packages", href: "#packages" },
-  { label: "Why us", href: "#why-us" },
-  { label: "Reviews", href: "#reviews" },
+  { label: "Explore", href: "/explore" },
+  { label: "Map", href: "/map" },
+  { label: "Saved", href: "/saved" },
 ] as const;
+
+export const languages = [
+  { code: "en", short: "EN", label: "English" },
+  { code: "km", short: "ខ្មែរ", label: "Khmer" },
+] as const;
+
+export type LanguageCode = (typeof languages)[number]["code"];
 
 export const footerNav = [
   {
-    title: "Company",
+    title: "Regions",
     links: [
-      { label: "About us", href: "#why-us" },
-      { label: "Our travel experts", href: "#why-us" },
-      { label: "Careers", href: "#" },
-      { label: "Press kit", href: "#" },
-      { label: "Travel journal", href: "#" },
+      { label: "Ancient Capitals & Khmer Civilization", href: "/explore" },
+      { label: "Northeastern Civilization", href: "/explore" },
+      { label: "Mekong & Tonle Sap Civilization", href: "/explore" },
+      { label: "Mountain & Waterfall Region", href: "/explore" },
     ],
   },
   {
-    title: "Explore",
+    title: "Interests",
     links: [
-      { label: "Popular destinations", href: "#destinations" },
-      { label: "Tour packages", href: "#packages" },
-      { label: "Island escapes", href: "#packages" },
-      { label: "Group tours", href: "#packages" },
-      { label: "Gift cards", href: "#" },
+      { label: "Ancient Cities", href: "/explore/interests" },
+      { label: "Temples", href: "/explore/interests" },
+      { label: "Archaeological Sites", href: "/explore/interests" },
+      { label: "Museums", href: "/explore/interests" },
     ],
   },
   {
-    title: "Support",
+    title: "Corridors",
     links: [
-      { label: "Contact us", href: "#contact" },
-      { label: "Booking terms", href: "#" },
-      { label: "Travel insurance", href: "#" },
-      { label: "Visa guidance", href: "#" },
-      { label: "Cancellation policy", href: "#" },
+      { label: "Cardamom & Peaks Explorer", href: "/explore/corridors" },
+      { label: "Coastal Paradise Route", href: "/explore/corridors" },
+      { label: "Khmer Civilization Trail", href: "/explore/corridors" },
+      { label: "Northeast Highland Loop", href: "/explore/corridors" },
     ],
   },
 ] as const;

@@ -2,13 +2,27 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
-import { CloseIcon, MenuIcon, PhoneIcon } from "@/components/ui/icons";
-import { mainNav, site } from "@/lib/site";
+import { CloseIcon, MenuIcon, UserIcon } from "@/components/ui/icons";
+import { languages, mainNav, type LanguageCode } from "@/lib/site";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lang, setLang] = useState<LanguageCode>("en");
+  const pathname = usePathname();
+
+  // Only the homepage has a dark hero for the header to float over; everywhere
+  // else it needs its own background or the white text lands on a light page.
+  const overHero = pathname === "/";
+
+  // "/" matches only itself; the others also own their sub-routes, so
+  // /explore/provinces still lights up Explore.
+  const isActive = (href: string) =>
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(`${href}/`);
 
   // The header floats over the hero image until the page scrolls past it.
   useEffect(() => {
@@ -26,7 +40,7 @@ export function SiteHeader() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  const solid = scrolled || menuOpen;
+  const solid = !overHero || scrolled || menuOpen;
 
   return (
     <header
@@ -41,45 +55,78 @@ export function SiteHeader() {
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">
-            {mainNav.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors after:absolute after:inset-x-4 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform hover:after:scale-x-100 ${
-                    solid
-                      ? "text-sand-700 hover:text-brand-700"
-                      : "text-white/85 hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {mainNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative rounded-full px-4 py-2 text-sm transition-colors after:absolute after:inset-x-4 after:bottom-1 after:origin-left after:bg-current after:transition-transform ${
+                      active
+                        ? "font-semibold after:h-0.5 after:scale-x-100"
+                        : "font-medium after:h-px after:scale-x-0 hover:after:scale-x-100"
+                    } ${
+                      active
+                        ? solid
+                          ? "text-brand-700 after:bg-sunset-500"
+                          : "text-white after:bg-sunset-400"
+                        : solid
+                          ? "text-sand-700 hover:text-brand-700"
+                          : "text-white/85 hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-            className={`hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors xl:inline-flex ${
-              solid
-                ? "text-sand-700 hover:bg-sand-100"
-                : "text-white/85 hover:bg-white/10 hover:text-white"
+          <div
+            role="group"
+            aria-label="Language"
+            className={`hidden h-11 w-28 items-center rounded-full p-1 transition-colors sm:inline-flex ${
+              solid ? "bg-sand-100" : "bg-white/15"
             }`}
           >
-            <PhoneIcon className="size-4" />
-            {site.phone}
-          </a>
+            {languages.map((language) => {
+              const active = language.code === lang;
+              return (
+                <button
+                  key={language.code}
+                  type="button"
+                  onClick={() => setLang(language.code)}
+                  aria-pressed={active}
+                  title={language.label}
+                  className={`inline-flex h-9 flex-1 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
+                    active
+                      ? solid
+                        ? "bg-white text-brand-700 shadow-sm"
+                        : "bg-white text-brand-800"
+                      : solid
+                        ? "text-sand-600 hover:text-sand-900"
+                        : "text-white/75 hover:text-white"
+                  }`}
+                >
+                  {language.short}
+                </button>
+              );
+            })}
+          </div>
 
           <Link
-            href="#contact"
-            className={`hidden rounded-full px-5 py-2.5 text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 sm:inline-flex ${
+            href="/login"
+            className={`hidden h-11 w-36 items-center justify-center gap-2 rounded-full text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 sm:inline-flex ${
               solid
-                ? "bg-brand-600 text-white hover:bg-brand-700"
+                ? "btn-sweep"
                 : "bg-white text-brand-800 hover:bg-sand-100"
             }`}
           >
-            Plan my trip
+            <UserIcon className="size-4" />
+            Log in
           </Link>
 
           <button
@@ -110,32 +157,65 @@ export function SiteHeader() {
       >
         <nav aria-label="Mobile" className="page-x py-5">
           <ul className="flex flex-col">
-            {mainNav.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block border-b border-sand-200/70 py-3.5 text-base font-medium text-sand-800"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {mainNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex items-center justify-between border-b border-sand-200/70 py-3.5 text-base ${
+                      active
+                        ? "font-semibold text-brand-700"
+                        : "font-medium text-sand-800"
+                    }`}
+                  >
+                    {item.label}
+                    {active ? (
+                      <span
+                        aria-hidden="true"
+                        className="size-1.5 rounded-full bg-sunset-500"
+                      />
+                    ) : null}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
+          <div
+            role="group"
+            aria-label="Language"
+            className="mt-5 flex items-center rounded-full bg-sand-100 p-1"
+          >
+            {languages.map((language) => {
+              const active = language.code === lang;
+              return (
+                <button
+                  key={language.code}
+                  type="button"
+                  onClick={() => setLang(language.code)}
+                  aria-pressed={active}
+                  className={`flex-1 rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
+                    active
+                      ? "bg-white text-brand-700 shadow-sm"
+                      : "text-sand-600"
+                  }`}
+                >
+                  {language.label}
+                </button>
+              );
+            })}
+          </div>
+
           <Link
-            href="#contact"
+            href="/login"
             onClick={() => setMenuOpen(false)}
-            className="mt-5 flex items-center justify-center rounded-full bg-brand-600 px-5 py-3 text-sm font-semibold text-white"
+            className="mt-3 flex items-center justify-center gap-2 btn-sweep rounded-full px-5 py-3 text-sm font-semibold"
           >
-            Plan my trip
+            <UserIcon className="size-4" />
+            Log in
           </Link>
-          <a
-            href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-            className="mt-3 flex items-center justify-center gap-2 text-sm font-medium text-sand-600"
-          >
-            <PhoneIcon className="size-4" />
-            {site.phone}
-          </a>
         </nav>
       </div>
     </header>

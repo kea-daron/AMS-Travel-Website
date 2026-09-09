@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/section-heading";
 import {
+  BookmarkIcon,
   CompassIcon,
+  MapIcon,
   ShieldIcon,
-  SupportIcon,
-  WalletIcon,
 } from "@/components/ui/icons";
 import { aboutImage, features } from "@/lib/data";
 import type { Feature } from "@/lib/data";
@@ -12,8 +12,8 @@ import type { Feature } from "@/lib/data";
 const iconFor: Record<Feature["icon"], typeof CompassIcon> = {
   compass: CompassIcon,
   shield: ShieldIcon,
-  wallet: WalletIcon,
-  support: SupportIcon,
+  map: MapIcon,
+  bookmark: BookmarkIcon,
 };
 
 export function WhyUs() {
@@ -33,10 +33,10 @@ export function WhyUs() {
 
           <div className="absolute -bottom-6 left-6 rounded-2xl bg-white p-5 shadow-xl shadow-sand-900/10 ring-1 ring-sand-900/5 sm:-right-6 sm:left-auto">
             <p className="font-display text-3xl font-semibold text-brand-700">
-              17 years
+              25 provinces
             </p>
             <p className="mt-1 max-w-[13rem] text-sm text-sand-600">
-              of routing trips, and still no call centre.
+              mapped, verified and re-checked every season.
             </p>
           </div>
         </div>
@@ -44,8 +44,8 @@ export function WhyUs() {
         <div>
           <SectionHeading
             eyebrow="Why AMS Travel"
-            title="A travel agency that answers the phone"
-            description="We keep the company small on purpose: fewer trips, planned properly, by the people who will also pick up when something goes sideways at 3am local time."
+            title="Cambodia, verified province by province"
+            description="We are not reselling somebody else's database. Every region, province and place on this site was visited, written up and photographed by people who live and travel here."
           />
 
           <ul className="mt-10 grid gap-8 sm:grid-cols-2">

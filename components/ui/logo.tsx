@@ -1,10 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
-import { PlaneIcon } from "@/components/ui/icons";
 import { site } from "@/lib/site";
 
 /**
  * Wordmark. `tone` follows the surface it sits on — the header flips it to
  * "light" while it is transparent over the hero.
+ *
+ * The badge artwork is a circle on a white square, so it is masked to a circle
+ * rather than shown as-is.
  */
 export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const isLight = tone === "light";
@@ -15,13 +18,18 @@ export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
       className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500"
     >
       <span
-        className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
-          isLight
-            ? "bg-white/15 text-white ring-1 ring-white/30 backdrop-blur-sm"
-            : "bg-brand-600 text-white"
+        className={`relative block size-10 shrink-0 overflow-hidden rounded-full ring-1 transition-transform duration-300 group-hover:scale-105 ${
+          isLight ? "ring-white/35" : "ring-sand-900/10"
         }`}
       >
-        <PlaneIcon className="size-5 -rotate-12 transition-transform duration-300 group-hover:rotate-0" />
+        <Image
+          src="/AMS-logo.jpg"
+          alt=""
+          width={80}
+          height={80}
+          priority
+          className="size-full object-cover"
+        />
       </span>
       <span className="flex flex-col leading-none">
         <span
@@ -36,7 +44,7 @@ export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
             isLight ? "text-white/70" : "text-sand-500"
           }`}
         >
-          Tours &amp; Escapes
+          Discover Cambodia
         </span>
       </span>
     </Link>
