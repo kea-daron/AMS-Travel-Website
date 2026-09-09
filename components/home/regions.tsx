@@ -68,7 +68,7 @@ export function RegionCard({
 
   return (
     <Link
-      href="#"
+      href={`/regions/${region.slug}`}
       className="group relative isolate flex h-80 flex-col justify-end overflow-hidden rounded-3xl bg-sand-200 p-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
     >
       <Image

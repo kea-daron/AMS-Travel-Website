@@ -2,9 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { mapDestinations } from "@/lib/data";
-import type { MapDestination } from "@/lib/data";
 import "leaflet/dist/leaflet.css";
+
+/** The minimum a pin needs; any richer record satisfies it. */
+export type MapPin = {
+  slug: string;
+  name: string;
+  lat: number;
+  lng: number;
+};
 
 /** Roughly the centre of Cambodia, used for the default view. */
 const CENTER: [number, number] = [12.5657, 104.991];
@@ -44,15 +50,20 @@ export function MapCanvas({
   destinations,
   selectedSlug,
   onSelect,
+  center = CENTER,
+  zoom = DEFAULT_ZOOM,
 }: {
-  destinations: MapDestination[];
+  destinations: MapPin[];
   selectedSlug: string | null;
   onSelect: (slug: string) => void;
+  center?: [number, number];
+  zoom?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef(new Map<string, L.Marker>());
   const firstRunRef = useRef(true);
+  const lastFlownRef = useRef<string | null>(null);
 
   // Create the map once, and tear it down completely on unmount.
   useEffect(() => {
@@ -61,8 +72,8 @@ export function MapCanvas({
 
     const markers = markersRef.current;
     const map = L.map(container, {
-      center: CENTER,
-      zoom: DEFAULT_ZOOM,
+      center,
+      zoom,
       minZoom: 6,
       scrollWheelZoom: true,
     });
@@ -85,6 +96,8 @@ export function MapCanvas({
       mapRef.current = null;
       markers.clear();
     };
+    // Only the initial view; later changes move the map through flyTo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Add, remove and restyle pins as the filtered list or selection changes.
@@ -122,24 +135,28 @@ export function MapCanvas({
     }
   }, [destinations, selectedSlug, onSelect]);
 
-  // Move the view whenever the selection changes, but not on first paint.
+  // Move the view whenever the selection changes, but not on first paint and
+  // not when only the filtered list underneath it changed.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
 
     if (firstRunRef.current) {
       firstRunRef.current = false;
+      lastFlownRef.current = selectedSlug;
       if (!selectedSlug) return;
     }
+    if (lastFlownRef.current === selectedSlug) return;
+    lastFlownRef.current = selectedSlug;
 
-    const target = mapDestinations.find((item) => item.slug === selectedSlug);
+    const target = destinations.find((item) => item.slug === selectedSlug);
 
     if (target) {
       map.flyTo([target.lat, target.lng], FOCUS_ZOOM, { duration: 1.1 });
     } else {
-      map.flyTo(CENTER, DEFAULT_ZOOM, { duration: 0.8 });
+      map.flyTo(center, zoom, { duration: 0.8 });
     }
-  }, [selectedSlug]);
+  }, [selectedSlug, destinations, center, zoom]);
 
   return <div ref={containerRef} className="size-full" />;
 }

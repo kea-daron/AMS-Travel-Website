@@ -4,7 +4,7 @@
  */
 
 /** Builds an Unsplash delivery URL. Host is allow-listed in `next.config.ts`. */
-const photo = (id: string, w: number) =>
+export const photo = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 export const heroImage = {

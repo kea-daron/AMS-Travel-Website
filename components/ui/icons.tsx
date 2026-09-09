@@ -128,6 +128,14 @@ export function MailIcon(props: IconProps) {
   );
 }
 
+export function FilterIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M3.5 5.5h17l-6.6 7.6v5.6l-3.8 2v-7.6L3.5 5.5Z" />
+    </Outline>
+  );
+}
+
 export function ExternalLinkIcon(props: IconProps) {
   return (
     <Outline {...props}>
