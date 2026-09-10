@@ -579,199 +579,119 @@ export const provinceCategories = [
 ] as const;
 
 /**
- * Hand-picked places for the "Recommended" section. Place names, provinces and
- * best-time windows are real; the ratings and review counts are demo figures —
- * wire them to live review data before launch.
+ * The homepage "Recommended" selection.
+ *
+ * These are references into the region data rather than copies of it, so a
+ * card and the destination page it opens can never drift apart. Only the
+ * editorial extras live here; name, province, category, blurb and image are
+ * resolved from `regionDetails` at render time.
+ *
+ * Ratings and review counts are demo figures — wire them to real review data
+ * before launch.
  */
-export type RecommendedPlace = {
-  slug: string;
-  name: string;
-  province: string;
+export type RecommendedPick = {
+  /** Region slug the destination belongs to. */
   region: string;
-  category: (typeof provinceCategories)[number];
-  summary: string;
+  /** Destination slug within that region. */
+  place: string;
   highlights: string[];
   bestTime: string;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
   badge?: string;
-  image: string;
-  alt: string;
 };
 
-export const recommendedPlaces: RecommendedPlace[] = [
+export const recommendedPicks: RecommendedPick[] = [
   {
-    slug: "angkor-archaeological-park",
-    name: "Angkor Archaeological Park",
-    province: "Siem Reap",
-    region: "Ancient Capitals & Khmer Civilization Region",
-    category: "Attraction Sites",
-    summary:
-      "Four hundred square kilometres of temple city — sunrise at Angkor Wat, the faces of the Bayon, and Ta Prohm still held together by tree roots.",
+    region: "ancient-capitals",
+    place: "angkor-wat",
     highlights: ["UNESCO", "Sunrise", "Temple circuit"],
     bestTime: "Nov – Feb",
     rating: 4.9,
     reviews: 2140,
     badge: "Most visited",
-    image: photo("1566706546199-a93ba33ce9f7", 1000),
-    alt: "The towers of Angkor Wat reflected in the moat at dawn",
   },
   {
-    slug: "kampong-phluk",
-    name: "Kampong Phluk Floating Village",
-    province: "Siem Reap",
-    region: "Mekong & Tonle Sap Civilization",
-    category: "Water",
-    summary:
-      "Houses on ten-metre stilts above the Tonle Sap, reached by boat through flooded mangrove forest that shifts with the season.",
+    region: "mekong-tonle-sap",
+    place: "kampong-phluk",
     highlights: ["Boat trip", "Flooded forest", "Stilt houses"],
     bestTime: "Aug – Dec",
     rating: 4.6,
     reviews: 780,
-    image: photo("1704103258899-78a73254775a", 1000),
-    alt: "Visitors crossing the Tonle Sap by boat near a floating village",
   },
   {
-    slug: "koh-rong-sanloem",
-    name: "Koh Rong Sanloem",
-    province: "Preah Sihanouk",
-    region: "Coastal & Island Region",
-    category: "Water",
-    summary:
-      "The quieter of the two big islands: Saracen Bay for the sand, Lazy Beach for sunset, and bioluminescent plankton after dark.",
+    region: "coastal-island",
+    place: "koh-rong-sanloem",
     highlights: ["Islands", "Snorkelling", "Bioluminescence"],
     bestTime: "Nov – Apr",
     rating: 4.8,
     reviews: 1120,
     badge: "Traveller favourite",
-    image: photo("1639192745319-e37cd8cd8374", 1000),
-    alt: "Aerial view of a forested island ringed by clear shallow water",
   },
   {
-    slug: "kampot-riverfront",
-    name: "Kampot & the Pepper Farms",
-    province: "Kampot",
-    region: "Khmer Culinary Region",
-    category: "Food",
-    summary:
-      "A slow river town of shophouses and pepper estates, with the abandoned hill station on Bokor mountain an hour above it.",
-    highlights: ["Pepper estates", "River sunset", "Bokor hill"],
+    region: "khmer-culinary",
+    place: "kampot-pepper",
+    highlights: ["Pepper estates", "Producer visit", "Tasting"],
     bestTime: "Dec – Mar",
     rating: 4.7,
     reviews: 640,
-    image: photo("1786954431605-f97ecd5ae5ae", 1000),
-    alt: "Kampot riverfront buildings lit up under a violet evening sky",
   },
   {
-    slug: "phnom-penh-riverside",
-    name: "Phnom Penh Riverside",
-    province: "Phnom Penh",
-    region: "Urban Lifestyle & Nightlife",
-    category: "Activities and Experiences",
-    summary:
-      "The Royal Palace and National Museum by day, then the Sisowath Quay strip — rooftop bars, night market stalls and late kitchens.",
+    region: "urban-nightlife",
+    place: "sisowath-quay",
     highlights: ["Royal Palace", "Night market", "Rooftops"],
     bestTime: "Nov – Feb",
     rating: 4.5,
     reviews: 1530,
-    image: photo("1635167463041-00f6d9344cda", 1000),
-    alt: "Phnom Penh skyline with a clock tower among tall buildings",
   },
   {
-    slug: "bou-sra-mondulkiri",
-    name: "Bou Sra Waterfall & Sen Monorom",
-    province: "Mondulkiri",
-    region: "Eco-Community Tourism",
-    category: "Attraction Sites",
-    summary:
-      "A two-tier waterfall in the eastern highlands, paired with Bunong homestays and the ethical elephant projects around Sen Monorom.",
-    highlights: ["Waterfall", "Elephant sanctuary", "Homestay"],
+    region: "northeastern-civilization",
+    place: "bou-sra",
+    highlights: ["Waterfall", "Bunong forest", "Homestay"],
     bestTime: "Jul – Nov",
     rating: 4.7,
     reviews: 410,
     badge: "Off the trail",
-    image: photo("1621063225827-1e6cb6c75b62", 1000),
-    alt: "Water falling over dark rock ledges into forest below",
   },
 ];
 
 /**
- * The "Popular Now" leaderboard. Places and provinces are real; `saves` and
- * `trend` are demo figures — replace them with live save/view counts once the
- * Saved feature is storing data.
+ * The "Popular Now" leaderboard.
+ *
+ * Like the recommended picks, these reference region destinations rather than
+ * copying them, so a row and the page it opens always agree. `saves` and
+ * `trend` are demo figures — replace them with live save counts once the Saved
+ * feature is storing data.
  */
-export type PopularPlace = {
-  slug: string;
-  name: string;
-  province: string;
-  category: (typeof provinceCategories)[number];
+export type PopularPick = {
+  region: string;
+  place: string;
   saves: string;
   trend: string;
-  image: string;
-  alt: string;
 };
 
-export const popularNow: PopularPlace[] = [
+export const popularPicks: PopularPick[] = [
+  { region: "ancient-capitals", place: "ta-prohm", saves: "3.1k", trend: "+42%" },
   {
-    slug: "ta-prohm",
-    name: "Ta Prohm",
-    province: "Siem Reap",
-    category: "Attraction Sites",
-    saves: "3.1k",
-    trend: "+42%",
-    image: photo("1526324585411-e24d5ba61edd", 400),
-    alt: "Temple stonework gripped by the roots of a giant fig tree",
-  },
-  {
-    slug: "preah-vihear-temple",
-    name: "Preah Vihear Temple",
-    province: "Preah Vihear",
-    category: "Attraction Sites",
+    region: "ancient-capitals",
+    place: "preah-vihear-temple",
     saves: "2.4k",
     trend: "+31%",
-    image: photo("1609949165382-2e442783c8d5", 400),
-    alt: "Weathered Khmer ruins standing among green trees",
   },
+  { region: "khmer-culinary", place: "kep-crab", saves: "1.9k", trend: "+27%" },
   {
-    slug: "kep-crab-market",
-    name: "Kep Crab Market",
-    province: "Kep",
-    category: "Food",
-    saves: "1.9k",
-    trend: "+27%",
-    image: photo("1582414004129-a955c6087f5e", 400),
-    alt: "Wooden jetty reaching out over calm coastal water",
-  },
-  {
-    slug: "kratie-dolphins",
-    name: "Kratié River Dolphins",
-    province: "Kratié",
-    category: "Water",
+    region: "mekong-tonle-sap",
+    place: "kampi-dolphins",
     saves: "1.6k",
     trend: "+22%",
-    image: photo("1602604193553-28c132dac0a7", 400),
-    alt: "Green trees lining a wide slow stretch of the Mekong",
   },
   {
-    slug: "battambang",
-    name: "Battambang Riverside",
-    province: "Battambang",
-    category: "Activities and Experiences",
+    region: "urban-nightlife",
+    place: "battambang-heritage-walk",
     saves: "1.2k",
     trend: "+18%",
-    image: photo("1707038346336-ce6789bce61d", 400),
-    alt: "Clock tower beside the river in a Cambodian provincial town",
   },
-  {
-    slug: "kirirom",
-    name: "Kirirom National Park",
-    province: "Kampong Speu",
-    category: "Tourism Corridors",
-    saves: "940",
-    trend: "+15%",
-    image: photo("1599283415392-c1ad8110a147", 400),
-    alt: "Empty road running between tall pines under a blue sky",
-  },
+  { region: "mountain-waterfall", place: "kirirom", saves: "940", trend: "+15%" },
 ];
 
 /**
@@ -872,59 +792,117 @@ export const interests: Interest[] = [
 ];
 
 /**
- * Curated multi-province routes. Provinces and rough distances are real; the
- * suggested durations are editorial guidance, not booked itineraries.
+ * The five tourism corridors, each an ordered chain of stops.
+ *
+ * `stops` drives both the printed chain and the line drawn on the map, so the
+ * order here is the route. Coordinates are approximate centre points; a stop
+ * like "Tonle Sap" or "Cardamom Mountains" stands for an area, not an address.
  */
+export type CorridorStop = {
+  name: string;
+  nameKh?: string;
+  province: string;
+  lat: number;
+  lng: number;
+};
+
 export type Corridor = {
   slug: string;
   name: string;
+  nameKh?: string;
   summary: string;
-  provinces: string[];
   days: string;
+  /** False when the corridor is a set of areas rather than one line. */
+  linear?: boolean;
+  stops: CorridorStop[];
   image: string;
   alt: string;
 };
 
 export const corridors: Corridor[] = [
   {
-    slug: "khmer-civilization-trail",
-    name: "Khmer Civilization Trail",
+    slug: "khmer-civilization",
+    name: "Khmer Civilization",
+    nameKh: "អរិយធម៌ខ្មែរ",
     summary:
-      "The temple route in chronological order — pre-Angkorian brick towers, the Angkor capitals, then the northern outposts on the escarpment.",
-    provinces: ["Siem Reap", "Kampong Thom", "Preah Vihear", "Banteay Meanchey"],
+      "The capitals in the order they were built — Angkor first, then back through Roluos and Kulen to the older cities north and east of it.",
     days: "7 – 10 days",
+    stops: [
+      { name: "Angkor", nameKh: "អង្គរ", province: "Siem Reap", lat: 13.4125, lng: 103.867 },
+      { name: "Roluos", nameKh: "រលួស", province: "Siem Reap", lat: 13.3383, lng: 103.9736 },
+      { name: "Phnom Kulen", nameKh: "គូលែន", province: "Siem Reap", lat: 13.5833, lng: 104.05 },
+      { name: "Koh Ker", nameKh: "កោះកេរ្តិ៍", province: "Preah Vihear", lat: 13.7833, lng: 104.5333 },
+      { name: "Ishanapura", nameKh: "ឦសានបុរី", province: "Kampong Thom", lat: 12.8722, lng: 105.04 },
+    ],
     image: photo("1566706546199-a93ba33ce9f7", 1000),
     alt: "The five towers of Angkor Wat behind the reflecting moat",
   },
   {
-    slug: "coastal-paradise-route",
-    name: "Coastal Paradise Route",
+    slug: "mekong-civilization",
+    name: "Mekong Civilization",
+    nameKh: "អរិយធម៌មេគង្គ",
     summary:
-      "West to east along the Gulf: island ferries, the pepper estates behind Kampot, and crab straight off the boats in Kep.",
-    provinces: ["Koh Kong", "Preah Sihanouk", "Kampot", "Kep"],
+      "Up the Mekong to the Lao border and back down the river system to the lake it feeds.",
     days: "6 – 9 days",
-    image: photo("1509781847595-a430dc27c7af", 1000),
-    alt: "Long empty shoreline meeting shallow clear water",
+    stops: [
+      { name: "Kratié", nameKh: "ក្រចេះ", province: "Kratié", lat: 12.488, lng: 106.019 },
+      { name: "Stung Treng", nameKh: "ស្ទឹងត្រែង", province: "Stung Treng", lat: 13.5259, lng: 105.9683 },
+      { name: "Mekong River", nameKh: "ទន្លេមេគង្គ", province: "Kampong Cham", lat: 11.9934, lng: 105.4638 },
+      { name: "Tonle Sap", nameKh: "ទន្លេសាប", province: "Siem Reap", lat: 13.2, lng: 103.85 },
+    ],
+    image: photo("1704103259506-6c0ca4d6dca4", 1000),
+    alt: "Stilted houses of a floating village on the Tonle Sap",
   },
   {
-    slug: "cardamom-peaks-explorer",
-    name: "Cardamom & Peaks Explorer",
+    slug: "coastal-discovery",
+    name: "Coastal Discovery",
+    nameKh: "រុករកតំបន់ឆ្នេរ",
     summary:
-      "Into the largest rainforest left in mainland Southeast Asia, then up to the pine plateau at Kirirom and the old hill station on Bokor.",
-    provinces: ["Koh Kong", "Pursat", "Kampong Speu"],
+      "East to west along the Gulf, ending on the two big islands offshore.",
+    days: "6 – 9 days",
+    stops: [
+      { name: "Kampot", nameKh: "កំពត", province: "Kampot", lat: 10.61, lng: 104.181 },
+      { name: "Kep", nameKh: "កែប", province: "Kep", lat: 10.4833, lng: 104.3167 },
+      { name: "Preah Sihanouk", nameKh: "ព្រះសីហនុ", province: "Preah Sihanouk", lat: 10.627, lng: 103.522 },
+      { name: "Koh Rong", nameKh: "កោះរុង", province: "Preah Sihanouk", lat: 10.7167, lng: 103.25 },
+      { name: "Koh Rong Sanloem", nameKh: "កោះរុងសន្លឹម", province: "Preah Sihanouk", lat: 10.6058, lng: 103.3167 },
+    ],
+    image: photo("1616421310226-7453165b353e", 1000),
+    alt: "Palms leaning over an empty beach on Koh Rong",
+  },
+  {
+    slug: "mountain-adventure",
+    name: "Mountain Adventure",
+    nameKh: "ការផ្សងព្រេងលើភ្នំ",
+    summary:
+      "The summit of the country, the range behind it, the plateau above Kampot, and the falls that come off all three.",
     days: "5 – 8 days",
+    stops: [
+      { name: "Phnom Aural", nameKh: "ភ្នំឱរ៉ាល់", province: "Kampong Speu", lat: 12.0333, lng: 104.1667 },
+      { name: "Cardamom Mountains", nameKh: "ជួរភ្នំក្រវាញ", province: "Koh Kong", lat: 11.9, lng: 103.3 },
+      { name: "Phnom Bokor", nameKh: "ភ្នំបូកគោ", province: "Kampot", lat: 10.6333, lng: 104.0167 },
+      { name: "Waterfall Country", nameKh: "តំបន់ទឹកជ្រោះ", province: "Koh Kong", lat: 11.5333, lng: 103.1 },
+    ],
     image: photo("1722054078069-095e86f88829", 1000),
     alt: "Still water below forested mountains under heavy cloud",
   },
   {
-    slug: "northeast-highland-loop",
-    name: "Northeast Highland Loop",
+    slug: "khmer-culinary",
+    name: "Khmer Culinary",
+    nameKh: "មុខម្ហូបខ្មែរ",
     summary:
-      "Up the Mekong to the dolphin pools, then east into Bunong and Tampuan country for crater lakes, waterfalls and highland homestays.",
-    provinces: ["Kratié", "Stung Treng", "Ratanakiri", "Mondulkiri"],
-    days: "8 – 12 days",
-    image: photo("1667371026189-dfd5544cfdf9", 1000),
-    alt: "Walkers on a forest path in the eastern highlands",
+      "Not a single road but a set of production areas — the pepper, palm sugar, prahok and rice that carry Khmer identity, region by region.",
+    days: "Flexible",
+    linear: false,
+    stops: [
+      { name: "Kampot Pepper", nameKh: "ម្រេចកំពត", province: "Kampot", lat: 10.65, lng: 104.25 },
+      { name: "Kampong Speu Palm Sugar", nameKh: "ស្ករត្នោត", province: "Kampong Speu", lat: 11.45, lng: 104.5167 },
+      { name: "Kampong Thom Prahok", nameKh: "ប្រហុក", province: "Kampong Thom", lat: 12.7111, lng: 104.8889 },
+      { name: "Siem Reap Kitchens", nameKh: "សៀមរាប", province: "Siem Reap", lat: 13.3622, lng: 103.86 },
+      { name: "Battambang Rice", nameKh: "បាត់ដំបង", province: "Battambang", lat: 13.0957, lng: 103.2022 },
+    ],
+    image: photo("1787736366516-20788522776a", 1000),
+    alt: "A busy street market stall under an orange sign",
   },
 ];
 
@@ -1077,8 +1055,8 @@ export const mapDestinations: MapDestination[] = [
     blurb: "A river town of shophouses, with the pepper estates just behind it.",
     lat: 10.61,
     lng: 104.181,
-    image: photo("1786954431605-f97ecd5ae5ae", 400),
-    alt: "A riverfront town lit up at dusk",
+    image: photo("1640116309648-79c20583e1c9", 400),
+    alt: "A spread of Khmer dishes in bowls on a table",
   },
   {
     slug: "bokor-hill-station",
@@ -1099,8 +1077,8 @@ export const mapDestinations: MapDestination[] = [
     blurb: "Crab straight off the boats, cooked with Kampot green pepper.",
     lat: 10.4833,
     lng: 104.3167,
-    image: photo("1582414004129-a955c6087f5e", 400),
-    alt: "A wooden jetty over calm sea",
+    image: photo("1768885149216-ea51e07e3940", 400),
+    alt: "Fried seafood and green beans served on a banana leaf",
   },
   {
     slug: "kirirom",

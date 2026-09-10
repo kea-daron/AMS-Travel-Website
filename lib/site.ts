@@ -44,10 +44,10 @@ export const footerNav = [
   {
     title: "Corridors",
     links: [
-      { label: "Cardamom & Peaks Explorer", href: "/explore/corridors" },
-      { label: "Coastal Paradise Route", href: "/explore/corridors" },
-      { label: "Khmer Civilization Trail", href: "/explore/corridors" },
-      { label: "Northeast Highland Loop", href: "/explore/corridors" },
+      { label: "Khmer Civilization", href: "/explore/corridors" },
+      { label: "Mekong Civilization", href: "/explore/corridors" },
+      { label: "Coastal Discovery", href: "/explore/corridors" },
+      { label: "Mountain Adventure", href: "/explore/corridors" },
     ],
   },
 ] as const;

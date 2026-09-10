@@ -877,3 +877,18 @@ export function distanceKm(
     Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
   return 2 * 6371 * Math.asin(Math.sqrt(h));
 }
+
+/**
+ * Every destination in a province, grouped by the region it belongs to.
+ * Provinces are named identically in both datasets, so the name is the key.
+ */
+export function getProvinceDestinations(provinceName: string) {
+  return regionDetails
+    .map((region) => ({
+      region,
+      destinations: region.destinations.filter(
+        (item) => item.province === provinceName,
+      ),
+    }))
+    .filter((group) => group.destinations.length > 0);
+}

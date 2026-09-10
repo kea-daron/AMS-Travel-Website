@@ -2,20 +2,23 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import {
   CompassIcon,
+  MapIcon,
   MapPinIcon,
   SearchIcon,
   StarIcon,
 } from "@/components/ui/icons";
 import {
+  corridors,
   provinceCategories,
   provinces,
   regionSpecialties,
   tourismRegions,
 } from "@/lib/data";
 
-const modes = ["By Tourism regions", "By Provinces"] as const;
+const modes = ["By Tourism regions", "By Provinces", "By Corridors"] as const;
 
 type Mode = (typeof modes)[number];
 
@@ -26,18 +29,31 @@ const labelClass =
   "block text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-sand-500";
 
 export function SearchBar() {
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>("By Tourism regions");
-
-  // No discovery API is wired up yet — send the traveller to the regions
-  // section so the control still does something useful.
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    document
-      .getElementById("regions")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  const [region, setRegion] = useState("");
+  const [corridor, setCorridor] = useState("");
 
   const byRegion = mode === "By Tourism regions";
+  const byCorridor = mode === "By Corridors";
+
+  // The stop list narrows to the chosen corridor.
+  const stops = corridors.find((item) => item.slug === corridor)?.stops ?? [];
+
+  /** Sends the traveller to whichever page answers what they picked. */
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (byCorridor) {
+      router.push(corridor ? `/map?corridor=${corridor}` : "/explore/corridors");
+      return;
+    }
+    if (byRegion) {
+      router.push(region ? `/regions/${region}` : "/explore");
+      return;
+    }
+    router.push("/explore/provinces");
+  }
 
   return (
     <div className="rounded-3xl bg-white/95 p-2 shadow-2xl shadow-brand-950/20 ring-1 ring-sand-900/5 backdrop-blur">
@@ -68,13 +84,64 @@ export function SearchBar() {
         onSubmit={handleSubmit}
         className="grid gap-px overflow-hidden rounded-2xl bg-sand-200 md:grid-cols-[1fr_1fr_auto]"
       >
-        {byRegion ? (
+        {byCorridor ? (
+          <>
+            <label className="flex items-center gap-3 bg-white px-4 py-3.5">
+              <MapIcon className="size-5 shrink-0 text-brand-600" />
+              <span className="flex-1">
+                <span className={labelClass}>Corridor</span>
+                <select
+                  name="corridor"
+                  value={corridor}
+                  onChange={(event) => setCorridor(event.target.value)}
+                  className={fieldClass}
+                >
+                  <option value="">All five corridors</option>
+                  {corridors.map((item) => (
+                    <option key={item.slug} value={item.slug}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 bg-white px-4 py-3.5">
+              <MapPinIcon className="size-5 shrink-0 text-brand-600" />
+              <span className="flex-1">
+                <span className={labelClass}>Stop</span>
+                <select
+                  name="stop"
+                  defaultValue=""
+                  disabled={stops.length === 0}
+                  className={`${fieldClass} disabled:text-sand-400`}
+                >
+                  <option value="">
+                    {stops.length === 0
+                      ? "Pick a corridor first"
+                      : "Any stop on the route"}
+                  </option>
+                  {stops.map((stop) => (
+                    <option key={stop.name} value={stop.name}>
+                      {stop.name}
+                    </option>
+                  ))}
+                </select>
+              </span>
+            </label>
+          </>
+        ) : byRegion ? (
           <>
             <label className="flex items-center gap-3 bg-white px-4 py-3.5">
               <CompassIcon className="size-5 shrink-0 text-brand-600" />
               <span className="flex-1">
                 <span className={labelClass}>Region</span>
-                <select name="region" defaultValue="" className={fieldClass}>
+                <select
+                  name="region"
+                  value={region}
+                  onChange={(event) => setRegion(event.target.value)}
+                  className={fieldClass}
+                >
                   <option value="">All regions</option>
                   {tourismRegions.map((region) => (
                     <option key={region.slug} value={region.slug}>

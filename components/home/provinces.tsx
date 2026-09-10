@@ -39,7 +39,7 @@ export function Provinces() {
 export function ProvinceTile({ province }: { province: Province }) {
   return (
     <Link
-      href="#"
+      href={`/provinces/${province.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-sand-200 bg-sand-50 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-white hover:shadow-md hover:shadow-sand-900/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
     >
       <span className="relative block aspect-[16/10] overflow-hidden bg-sand-200">

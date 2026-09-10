@@ -41,20 +41,27 @@ export default function ExploreCorridorsPage() {
                   {corridor.summary}
                 </span>
 
-                <span className="mt-4 flex flex-wrap items-center gap-1.5">
-                  {corridor.provinces.map((province, index) => (
+                <span className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2">
+                  {corridor.stops.map((stop, index) => (
                     <span
-                      key={province}
+                      key={stop.name}
                       className="inline-flex items-center gap-1.5 text-xs text-sand-500"
                     >
                       {index === 0 ? (
                         <MapPinIcon className="size-3.5 text-sand-400" />
                       ) : (
                         <span aria-hidden="true" className="text-sand-300">
-                          →
+                          {corridor.linear === false ? "·" : "→"}
                         </span>
                       )}
-                      {province}
+                      <span className="font-medium text-sand-700">
+                        {stop.name}
+                      </span>
+                      {stop.nameKh ? (
+                        <span lang="km" className="text-sand-400">
+                          {stop.nameKh}
+                        </span>
+                      ) : null}
                     </span>
                   ))}
                 </span>
