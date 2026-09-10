@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
   ArrowRightIcon,
@@ -30,11 +31,13 @@ const ALL = "All Categories";
 type View = "cards" | "map";
 
 export function RegionExplorer({
+  regionSlug,
   categories,
   filterTags,
   facets,
   destinations,
 }: {
+  regionSlug: string;
   categories: string[];
   filterTags: string[];
   facets?: string[];
@@ -336,7 +339,7 @@ export function RegionExplorer({
           <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((item) => (
               <li key={item.slug}>
-                <DestinationCard destination={item} />
+                <DestinationCard destination={item} regionSlug={regionSlug} />
               </li>
             ))}
           </ul>
@@ -367,6 +370,13 @@ export function RegionExplorer({
                 <p className="mt-1.5 text-sm leading-relaxed text-sand-600">
                   {selected.blurb}
                 </p>
+                <Link
+                  href={`/regions/${regionSlug}/${selected.slug}`}
+                  className="group mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-700"
+                >
+                  View details
+                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </article>
             </div>
           ) : null}
@@ -384,11 +394,13 @@ export function RegionExplorer({
 
 function DestinationCard({
   destination,
+  regionSlug,
 }: {
   destination: RegionDestination;
+  regionSlug: string;
 }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-sand-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-950/5">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-950/5">
       <div className="relative aspect-[16/10] bg-sand-200">
         <Image
           src={destination.image}
@@ -412,11 +424,13 @@ function DestinationCard({
             ) : null}
           </span>
 
-          <SaveButton
-            slug={destination.slug}
-            name={destination.name}
-            tone="overlay"
-          />
+          <span className="relative z-10">
+            <SaveButton
+              slug={destination.slug}
+              name={destination.name}
+              tone="overlay"
+            />
+          </span>
         </div>
 
         {destination.rating ? (
@@ -482,10 +496,14 @@ function DestinationCard({
           {destination.blurb}
         </p>
 
-        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-700">
+        <Link
+          href={`/regions/${regionSlug}/${destination.slug}`}
+          aria-label={`View details for ${destination.name}`}
+          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
+        >
           View details
           <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
-        </span>
+        </Link>
       </div>
     </article>
   );

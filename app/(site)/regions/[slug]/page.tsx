@@ -136,20 +136,20 @@ export default async function RegionPage({
         </div>
       </section>
 
-      {region.timeline ? (
+      {region.coverage ? (
         <section className="bg-sand-100 py-16 lg:py-20">
           <div className="page-x">
             <h2 className="font-display text-2xl font-semibold text-sand-900 sm:text-3xl">
-              {region.timelineTitle}
+              {region.coverageTitle}
             </h2>
-            {region.timelineIntro ? (
+            {region.coverageIntro ? (
               <p className="mt-1.5 max-w-2xl text-sm text-sand-600">
-                {region.timelineIntro}
+                {region.coverageIntro}
               </p>
             ) : null}
 
             <ol className="mt-8">
-              {region.timeline.map((era, index) => (
+              {region.coverage.map((era, index) => (
                 <li key={era.order} className="flex gap-4 md:gap-6">
                   <div
                     aria-hidden="true"
@@ -158,7 +158,7 @@ export default async function RegionPage({
                     <span className="btn-sweep flex size-9 items-center justify-center rounded-full text-xs font-bold shadow-sm md:size-11 md:text-sm">
                       {era.order}
                     </span>
-                    {index < region.timeline!.length - 1 ? (
+                    {index < region.coverage!.length - 1 ? (
                       <span className="w-px flex-1 bg-sand-300" />
                     ) : null}
                   </div>
@@ -166,10 +166,10 @@ export default async function RegionPage({
                   <div className="pb-9">
                     <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                       <span className="font-semibold text-brand-700">
-                        {era.years}
+                        {era.kicker}
                       </span>
                       <span className="rounded-full bg-white px-2.5 py-0.5 font-medium text-sand-600 ring-1 ring-sand-200">
-                        {era.period}
+                        {era.badge}
                       </span>
                     </p>
 
@@ -198,6 +198,7 @@ export default async function RegionPage({
 
       <section className="page-x py-16 lg:py-20">
         <RegionExplorer
+          regionSlug={region.slug}
           categories={region.categories}
           filterTags={region.filterTags}
           facets={region.facets}
