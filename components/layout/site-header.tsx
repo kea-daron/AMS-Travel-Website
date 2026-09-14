@@ -4,14 +4,27 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
-import { CloseIcon, MenuIcon, UserIcon } from "@/components/ui/icons";
+import { AccountMenu, Avatar } from "@/components/layout/account-menu";
+import {
+  ArrowRightIcon,
+  BookmarkIcon,
+  CloseIcon,
+  LogOutIcon,
+  MenuIcon,
+  UserIcon,
+} from "@/components/ui/icons";
 import { languages, mainNav, type LanguageCode } from "@/lib/site";
+import { endSession, useSession } from "@/lib/use-session";
+import { useProfile } from "@/lib/use-profile";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lang, setLang] = useState<LanguageCode>("en");
   const pathname = usePathname();
+  const { user } = useSession();
+  const { profile } = useProfile(user?.name ?? null);
+  const displayName = profile.displayName ?? user?.name ?? "";
 
   // Only the homepage has a dark hero for the header to float over; everywhere
   // else it needs its own background or the white text lands on a light page.
@@ -117,17 +130,21 @@ export function SiteHeader() {
             })}
           </div>
 
-          <Link
-            href="/login"
-            className={`hidden h-11 w-36 items-center justify-center gap-2 rounded-full text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 sm:inline-flex ${
-              solid
-                ? "btn-sweep"
-                : "bg-white text-brand-800 hover:bg-sand-100"
-            }`}
-          >
-            <UserIcon className="size-4" />
-            Log in
-          </Link>
+          {user ? (
+            <AccountMenu name={displayName} photo={profile.photo} solid={solid} />
+          ) : (
+            <Link
+              href="/login"
+              className={`hidden h-11 w-36 items-center justify-center gap-2 rounded-full text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 sm:inline-flex ${
+                solid
+                  ? "btn-sweep"
+                  : "bg-white text-brand-800 hover:bg-sand-100"
+              }`}
+            >
+              <UserIcon className="size-4" />
+              Log in
+            </Link>
+          )}
 
           <button
             type="button"
@@ -208,14 +225,56 @@ export function SiteHeader() {
             })}
           </div>
 
-          <Link
-            href="/login"
-            onClick={() => setMenuOpen(false)}
-            className="mt-3 flex items-center justify-center gap-2 btn-sweep rounded-full px-5 py-3 text-sm font-semibold"
-          >
-            <UserIcon className="size-4" />
-            Log in
-          </Link>
+          {user ? (
+            <div className="mt-3 rounded-2xl bg-white p-3 ring-1 ring-sand-200">
+              <Link
+                href="/account"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-1 py-0.5"
+              >
+                <Avatar name={displayName} photo={profile.photo} />
+                <span className="min-w-0">
+                  <span className="block text-xs font-semibold uppercase tracking-[0.14em] text-sand-500">
+                    Account
+                  </span>
+                  <span className="block truncate text-sm font-semibold text-sand-900">
+                    {displayName}
+                  </span>
+                </span>
+                <ArrowRightIcon className="ml-auto size-4 text-sand-400" />
+              </Link>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <Link
+                  href="/saved"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-full border border-sand-300 px-4 py-2.5 text-sm font-semibold text-sand-800"
+                >
+                  <BookmarkIcon className="size-4" />
+                  Saved
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    endSession();
+                    setMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 btn-sweep rounded-full px-4 py-2.5 text-sm font-semibold"
+                >
+                  <LogOutIcon className="size-4" />
+                  Log out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              onClick={() => setMenuOpen(false)}
+              className="mt-3 flex items-center justify-center gap-2 btn-sweep rounded-full px-5 py-3 text-sm font-semibold"
+            >
+              <UserIcon className="size-4" />
+              Log in
+            </Link>
+          )}
         </nav>
       </div>
     </header>

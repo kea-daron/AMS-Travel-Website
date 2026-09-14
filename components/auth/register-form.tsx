@@ -1,7 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
-import { authInitialState, signUp } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { signUp } from "@/app/actions";
+import type { AuthState } from "@/app/actions";
+import { startSession } from "@/lib/use-session";
 import { Field } from "@/components/auth/field";
 import {
   ArrowRightIcon,
@@ -11,10 +14,25 @@ import {
 } from "@/components/ui/icons";
 import { SubmitButton } from "@/components/auth/form-parts";
 
-export function RegisterForm() {
+export function RegisterForm({ next }: { next?: string }) {
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(
-    signUp,
-    authInitialState,
+    async (previous: AuthState, formData: FormData) => {
+      const result = await signUp(previous, formData);
+      // A new account is signed straight in, the same as logging in.
+      if (result.status === "success") {
+        startSession(
+          {
+            name: result.values?.username ?? "",
+            email: result.values?.email ?? "",
+          },
+          next,
+        );
+        router.replace(next ?? "/");
+      }
+      return result;
+    },
+    { status: "idle", message: "" } satisfies AuthState,
   );
 
   return (

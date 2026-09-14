@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { PlaceMap } from "@/components/regions/place-map";
 import { SaveButton } from "@/components/saved/save-button";
+import { ShareButton } from "@/components/share/share-button";
+import { StayDetail } from "@/components/stays/stay-detail";
+import { TrackBrowse } from "@/components/account/track-browse";
+import { StampButton } from "@/components/stays/stamp-button";
 import {
   ArrowRightIcon,
   ExternalLinkIcon,
@@ -18,6 +22,7 @@ import {
   regionDetails,
 } from "@/lib/regions";
 import type { RegionDestination } from "@/lib/regions";
+import { stayProfile } from "@/lib/stays";
 
 export function generateStaticParams() {
   return regionDetails.flatMap((region) =>
@@ -53,6 +58,13 @@ export default async function PlacePage({
   if (!found) notFound();
 
   const { region, destination } = found;
+
+  // Somewhere to sleep gets its own layout.
+  const profile = stayProfile(destination);
+  if (profile) {
+    return <StayDetail region={region} stay={destination} profile={profile} />;
+  }
+
   const hasPin = destination.lat !== undefined && destination.lng !== undefined;
 
   // Closest three places in the same region, by great-circle distance.
@@ -77,6 +89,7 @@ export default async function PlacePage({
 
   return (
     <article>
+      <TrackBrowse id={`${region.slug}/${destination.slug}`} />
       <header className="relative isolate overflow-hidden bg-brand-950">
         <Image
           src={destination.image}
@@ -149,8 +162,19 @@ export default async function PlacePage({
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
+            <ShareButton
+              path={`/regions/${region.slug}/${destination.slug}`}
+              name={destination.name}
+              text={destination.blurb}
+              tone="overlay"
+            />
             <SaveButton
-              slug={destination.slug}
+              slug={`${region.slug}/${destination.slug}`}
+              name={destination.name}
+              tone="overlay"
+            />
+            <StampButton
+              placeKey={`${region.slug}/${destination.slug}`}
               name={destination.name}
               tone="overlay"
             />

@@ -44,26 +44,32 @@ export type AuthState = {
   values?: Record<string, string>;
 };
 
-export const authInitialState: AuthState = { status: "idle", message: "" };
-
 const USERNAME = /^[a-zA-Z0-9_.]{3,24}$/;
 
 /**
- * Signs a traveller in.
+ * The one account that can log in until the API exists. It lives here, in a
+ * server action, so the password never reaches the browser.
  *
- * TODO: no auth provider is wired up yet. This validates the shape of the
- * credentials and stops there — it never checks them against a user record and
- * never establishes a session.
+ * TODO: delete this and check credentials against the API instead.
+ */
+const TEST_ACCOUNT = { username: "qwer", password: "1234" } as const;
+
+/**
+ * Signs a traveller in with a username or email and a password.
+ *
+ * TODO: no auth provider is wired up yet, so only TEST_ACCOUNT gets in. On
+ * success the login form starts a stand-in session in the browser (see
+ * `lib/use-session.ts`).
  */
 export async function signIn(
   _prevState: AuthState,
   formData: FormData,
 ): Promise<AuthState> {
-  const email = String(formData.get("email") ?? "").trim();
+  const identifier = String(formData.get("identifier") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
   const errors: Record<string, string> = {};
-  if (!EMAIL.test(email)) errors.email = "Enter a valid email address.";
+  if (!identifier) errors.identifier = "Enter your username or email.";
   if (!password) errors.password = "Enter your password.";
 
   if (Object.keys(errors).length > 0) {
@@ -71,16 +77,27 @@ export async function signIn(
       status: "error",
       message: "Please check the highlighted fields.",
       errors,
-      values: { email },
+      values: { identifier },
     };
   }
 
-  console.info("[auth] sign-in attempt", { email });
+  const matches =
+    identifier.toLowerCase() === TEST_ACCOUNT.username &&
+    password === TEST_ACCOUNT.password;
+
+  if (!matches) {
+    return {
+      status: "error",
+      message: "Incorrect username or password.",
+      errors: { password: "Incorrect username or password." },
+      values: { identifier },
+    };
+  }
 
   return {
     status: "success",
-    message: "Details look right — sign-in is not connected yet.",
-    values: { email },
+    message: "Signed in.",
+    values: { username: TEST_ACCOUNT.username },
   };
 }
 

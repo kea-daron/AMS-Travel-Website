@@ -18,9 +18,17 @@ import {
   tourismRegions,
 } from "@/lib/data";
 
-const modes = ["By Tourism regions", "By Provinces", "By Corridors"] as const;
+const modes = ["All", "By Tourism regions", "By Provinces", "By Corridors"] as const;
 
 type Mode = (typeof modes)[number];
+
+/** Phone-width labels, so all four tabs fit on one line. */
+const shortLabel: Record<Mode, string> = {
+  All: "All",
+  "By Tourism regions": "Regions",
+  "By Provinces": "Provinces",
+  "By Corridors": "Corridors",
+};
 
 const fieldClass =
   "peer w-full bg-transparent text-sm font-medium text-sand-900 placeholder:text-sand-400 focus:outline-none";
@@ -30,20 +38,24 @@ const labelClass =
 
 export function SearchBar() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("By Tourism regions");
+  const [mode, setMode] = useState<Mode>("All");
+  const [query, setQuery] = useState("");
   const [region, setRegion] = useState("");
   const [corridor, setCorridor] = useState("");
 
+  const byAll = mode === "All";
   const byRegion = mode === "By Tourism regions";
   const byCorridor = mode === "By Corridors";
-
-  // The stop list narrows to the chosen corridor.
-  const stops = corridors.find((item) => item.slug === corridor)?.stops ?? [];
 
   /** Sends the traveller to whichever page answers what they picked. */
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (byAll) {
+      const q = query.trim();
+      router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
+      return;
+    }
     if (byCorridor) {
       router.push(corridor ? `/map?corridor=${corridor}` : "/explore/corridors");
       return;
@@ -60,7 +72,7 @@ export function SearchBar() {
       <div
         role="tablist"
         aria-label="Discover by"
-        className="flex gap-1 px-2 pt-1.5 pb-3"
+        className="flex gap-1 overflow-x-auto px-2 pt-1.5 pb-3"
       >
         {modes.map((item) => (
           <button
@@ -69,13 +81,14 @@ export function SearchBar() {
             role="tab"
             aria-selected={mode === item}
             onClick={() => setMode(item)}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+            className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors sm:px-4 ${
               mode === item
                 ? "bg-brand-50 text-brand-700"
                 : "text-sand-500 hover:text-sand-800"
             }`}
           >
-            {item}
+            <span className="sm:hidden">{shortLabel[item]}</span>
+            <span className="hidden sm:inline">{item}</span>
           </button>
         ))}
       </div>
@@ -84,52 +97,41 @@ export function SearchBar() {
         onSubmit={handleSubmit}
         className="grid gap-px overflow-hidden rounded-2xl bg-sand-200 md:grid-cols-[1fr_1fr_auto]"
       >
-        {byCorridor ? (
-          <>
-            <label className="flex items-center gap-3 bg-white px-4 py-3.5">
-              <MapIcon className="size-5 shrink-0 text-brand-600" />
-              <span className="flex-1">
-                <span className={labelClass}>Corridor</span>
-                <select
-                  name="corridor"
-                  value={corridor}
-                  onChange={(event) => setCorridor(event.target.value)}
-                  className={fieldClass}
-                >
-                  <option value="">All five corridors</option>
-                  {corridors.map((item) => (
-                    <option key={item.slug} value={item.slug}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </span>
-            </label>
-
-            <label className="flex items-center gap-3 bg-white px-4 py-3.5">
-              <MapPinIcon className="size-5 shrink-0 text-brand-600" />
-              <span className="flex-1">
-                <span className={labelClass}>Stop</span>
-                <select
-                  name="stop"
-                  defaultValue=""
-                  disabled={stops.length === 0}
-                  className={`${fieldClass} disabled:text-sand-400`}
-                >
-                  <option value="">
-                    {stops.length === 0
-                      ? "Pick a corridor first"
-                      : "Any stop on the route"}
+        {byAll ? (
+          <label className="flex items-center gap-3 bg-white px-4 py-3.5 md:col-span-2">
+            <SearchIcon className="size-5 shrink-0 text-brand-600" />
+            <span className="flex-1">
+              <span className={labelClass}>Search everything</span>
+              <input
+                type="search"
+                name="q"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Temples, street food, homestays, Kampot…"
+                className={fieldClass}
+              />
+            </span>
+          </label>
+        ) : byCorridor ? (
+          <label className="flex items-center gap-3 bg-white px-4 py-3.5 md:col-span-2">
+            <MapIcon className="size-5 shrink-0 text-brand-600" />
+            <span className="flex-1">
+              <span className={labelClass}>Corridor</span>
+              <select
+                name="corridor"
+                value={corridor}
+                onChange={(event) => setCorridor(event.target.value)}
+                className={fieldClass}
+              >
+                <option value="">All five corridors</option>
+                {corridors.map((item) => (
+                  <option key={item.slug} value={item.slug}>
+                    {item.name}
                   </option>
-                  {stops.map((stop) => (
-                    <option key={stop.name} value={stop.name}>
-                      {stop.name}
-                    </option>
-                  ))}
-                </select>
-              </span>
-            </label>
-          </>
+                ))}
+              </select>
+            </span>
+          </label>
         ) : byRegion ? (
           <>
             <label className="flex items-center gap-3 bg-white px-4 py-3.5">

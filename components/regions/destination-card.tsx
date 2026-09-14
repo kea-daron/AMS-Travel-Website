@@ -9,6 +9,7 @@ import {
   StarIcon,
 } from "@/components/ui/icons";
 import { SaveButton } from "@/components/saved/save-button";
+import { ShareButton } from "@/components/share/share-button";
 import type { RegionDestination } from "@/lib/regions";
 
 /**
@@ -59,9 +60,15 @@ export function DestinationCard({
             ) : null}
           </span>
 
-          <span className="relative z-10">
+          <span className="relative z-10 flex gap-2">
+            <ShareButton
+              path={`/regions/${regionSlug}/${destination.slug}`}
+              name={destination.name}
+              text={destination.blurb}
+              tone="overlay"
+            />
             <SaveButton
-              slug={destination.slug}
+              slug={`${regionSlug}/${destination.slug}`}
               name={destination.name}
               tone="overlay"
             />

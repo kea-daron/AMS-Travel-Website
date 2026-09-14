@@ -10,20 +10,32 @@ import {
   MapIcon,
   MapPinIcon,
 } from "@/components/ui/icons";
-import { mapDestinations } from "@/lib/data";
 import { useSaved } from "@/lib/use-saved";
+import { useSession } from "@/lib/use-session";
+import { groupSaved } from "@/lib/saved-entries";
+import type { SavedPlace } from "@/lib/saved-entries";
+import { LoginRequired } from "@/components/auth/login-required";
 
-export function SavedList() {
+export function SavedList({ places: all }: { places: SavedPlace[] }) {
   const { slugs, remove, clear, ready } = useSaved();
+  const { signedIn, ready: sessionReady } = useSession();
 
   // Keep the traveller's own order rather than the dataset's.
-  const places = slugs
-    .map((slug) => mapDestinations.find((item) => item.slug === slug))
-    .filter((item) => item !== undefined);
+  const places = groupSaved(slugs, all);
 
-  if (!ready) {
+  if (!ready || !sessionReady) {
     return (
       <p className="mt-10 text-sm text-sand-500">Loading your list…</p>
+    );
+  }
+
+  if (!signedIn) {
+    return (
+      <LoginRequired
+        title="Log in to see your saved places"
+        body="Saving needs an account. Log in, or create one in a minute, and the places you bookmark will be waiting here."
+        next="/saved"
+      />
     );
   }
 
@@ -46,8 +58,8 @@ export function SavedList() {
       </div>
 
       <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {places.map((place) => (
-          <li key={place.slug}>
+        {places.map(({ place, keys }) => (
+          <li key={place.key}>
             <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-sand-200 bg-white transition-all hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-950/5">
               <div className="relative aspect-[16/10] bg-sand-200">
                 <Image
@@ -59,7 +71,7 @@ export function SavedList() {
                 />
                 <button
                   type="button"
-                  onClick={() => remove(place.slug)}
+                  onClick={() => keys.forEach(remove)}
                   aria-label={`Remove ${place.name} from saved`}
                   className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-sand-900/55 text-white backdrop-blur-sm transition-colors hover:bg-sunset-600"
                 >
@@ -81,21 +93,32 @@ export function SavedList() {
 
                 <div className="mt-4 flex items-center gap-2 border-t border-sand-200 pt-4">
                   <Link
-                    href={`/map?place=${place.slug}`}
-                    className="inline-flex flex-1 items-center justify-center gap-2 btn-sweep rounded-xl px-3 py-2.5 text-sm font-semibold"
+                    href={place.href}
+                    className="group/link inline-flex flex-1 items-center justify-center gap-2 btn-sweep rounded-xl px-3 py-2.5 text-sm font-semibold"
                   >
-                    <MapIcon className="size-4" />
-                    Show on map
+                    {place.onMap ? (
+                      <>
+                        <MapIcon className="size-4" />
+                        Show on map
+                      </>
+                    ) : (
+                      <>
+                        View details
+                        <ArrowRightIcon className="size-4 transition-transform group-hover/link:translate-x-1" />
+                      </>
+                    )}
                   </Link>
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lng}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Open ${place.name} in Google Maps`}
-                    className="inline-flex size-10 items-center justify-center rounded-xl border border-sand-300 text-sand-600 transition-colors hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700"
-                  >
-                    <ExternalLinkIcon className="size-4" />
-                  </a>
+                  {place.lat !== undefined && place.lng !== undefined ? (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${place.name} in Google Maps`}
+                      className="inline-flex size-10 items-center justify-center rounded-xl border border-sand-300 text-sand-600 transition-colors hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700"
+                    >
+                      <ExternalLinkIcon className="size-4" />
+                    </a>
+                  ) : null}
                 </div>
               </div>
             </article>

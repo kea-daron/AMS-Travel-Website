@@ -65,6 +65,12 @@ function write(next: string[]) {
   window.dispatchEvent(new CustomEvent(EVENT));
 }
 
+/** Adds a place outside React — used to finish a save that waited on login. */
+export function addSaved(slug: string) {
+  const current = parse(readRaw());
+  if (!current.includes(slug)) write([slug, ...current]);
+}
+
 /**
  * Saved places, held in localStorage.
  *

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SavedList } from "@/components/saved/saved-list";
+import { savablePlaces } from "@/lib/savable";
 
 export const metadata: Metadata = {
   title: "Saved",
@@ -16,7 +17,7 @@ export default function SavedPage() {
         Everything you have bookmarked, ready to turn into a route.
       </p>
 
-      <SavedList />
+      <SavedList places={savablePlaces()} />
     </div>
   );
 }

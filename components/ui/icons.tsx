@@ -392,3 +392,180 @@ export function YoutubeIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function ShareIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="18" cy="5.5" r="2.5" />
+      <circle cx="6" cy="12" r="2.5" />
+      <circle cx="18" cy="18.5" r="2.5" />
+      <path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1" />
+    </Outline>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </Outline>
+  );
+}
+
+export function LogOutIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14" />
+      <path d="M10 16.5 5.5 12 10 7.5M5.5 12H15" />
+    </Outline>
+  );
+}
+
+export function PencilIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M14.5 5.5 18.5 9.5M4 20l1-4.5L15.8 4.7a2 2 0 0 1 2.8 0l.7.7a2 2 0 0 1 0 2.8L8.5 19 4 20Z" />
+    </Outline>
+  );
+}
+
+export function CameraIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M4 8.5A2 2 0 0 1 6 6.5h1.6l1.3-2h6.2l1.3 2H18a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8.5Z" />
+      <circle cx="12" cy="12.5" r="3.3" />
+    </Outline>
+  );
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l.9 12a1.5 1.5 0 0 0 1.5 1.4h6.2a1.5 1.5 0 0 0 1.5-1.4l.9-12" />
+    </Outline>
+  );
+}
+
+export function BedIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M3 18.5V6M3 14h18v4.5M21 14v-2.5a3 3 0 0 0-3-3h-7V14" />
+      <circle cx="7" cy="10.5" r="1.8" />
+    </Outline>
+  );
+}
+
+export function BellIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M4 17.5h16M5.5 17.5a6.5 6.5 0 0 1 13 0M12 11V9M10 7h4" />
+      <path d="M3.5 20.5h17" />
+    </Outline>
+  );
+}
+
+export function WifiIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0" />
+      <circle cx="12" cy="19" r="0.9" fill="currentColor" />
+    </Outline>
+  );
+}
+
+export function PoolIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M8 15V5.5a2 2 0 0 1 4 0M14 15V5.5a2 2 0 0 1 4 0M8 9.5h6M8 12.5h6" />
+      <path d="M3 18c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1" />
+    </Outline>
+  );
+}
+
+export function SnowflakeIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9" />
+      <path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2" />
+    </Outline>
+  );
+}
+
+export function GlassIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M6 4h12l-6 7.5L6 4ZM12 11.5V20M8.5 20h7" />
+    </Outline>
+  );
+}
+
+export function CarIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M5 16.5h14v-4l-1.8-4.3A1.5 1.5 0 0 0 15.8 7H8.2a1.5 1.5 0 0 0-1.4 1.2L5 12.5v4ZM5 12.5h14" />
+      <circle cx="8" cy="16.5" r="1.6" />
+      <circle cx="16" cy="16.5" r="1.6" />
+    </Outline>
+  );
+}
+
+export function BoatIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M3.5 14.5h17l-2.5 4h-12l-2.5-4ZM12 14.5V4l5.5 7.5H12" />
+    </Outline>
+  );
+}
+
+export function BikeIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="6" cy="16" r="3.5" />
+      <circle cx="18" cy="16" r="3.5" />
+      <path d="M6 16l4-7h5l3 7M10 9l2.5 7H6M13.5 6.5H16" />
+    </Outline>
+  );
+}
+
+export function SunIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
+    </Outline>
+  );
+}
+
+export function TentIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M12 4 3 19.5h18L12 4ZM12 11l-3.5 8.5M12 11l3.5 8.5" />
+    </Outline>
+  );
+}
+
+export function TelegramIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M20.7 4.3 2.9 11.2c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.4c.2.6.4.8.8.8.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.8l3-14.1c.3-1.3-.5-1.8-1.4-1.4ZM9.8 14.5l-.4 3.6-1.3-4.3 9.3-5.9-7.6 6.6Z" />
+    </svg>
+  );
+}
+
+export function AwardIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="12" cy="9" r="5.5" />
+      <path d="M8.5 13.5 7 21l5-2.5 5 2.5-1.5-7.5" />
+    </Outline>
+  );
+}
+
+export function StampIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M4 20.5h16M4.5 17.5h15v-2a1.5 1.5 0 0 0-1.5-1.5H6a1.5 1.5 0 0 0-1.5 1.5v2Z" />
+      <path d="M9.5 14V11a2.5 2.5 0 0 1-1-2 3.5 3.5 0 1 1 7 0 2.5 2.5 0 0 1-1 2v3" />
+    </Outline>
+  );
+}

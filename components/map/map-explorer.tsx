@@ -12,6 +12,7 @@ import {
   SearchIcon,
 } from "@/components/ui/icons";
 import { SaveButton } from "@/components/saved/save-button";
+import { ShareButton } from "@/components/share/share-button";
 import { corridors, mapDestinations, provinceCategories } from "@/lib/data";
 import { corridorRoutes } from "@/lib/corridor-routes";
 import type { Corridor, MapDestination } from "@/lib/data";
@@ -248,7 +249,14 @@ function ListRow({
       </span>
       </button>
 
-      <SaveButton slug={destination.slug} name={destination.name} />
+      <span className="flex shrink-0">
+        <ShareButton
+          path={`/map?place=${destination.slug}`}
+          name={destination.name}
+          text={destination.blurb}
+        />
+        <SaveButton slug={destination.slug} name={destination.name} />
+      </span>
     </span>
   );
 }
@@ -272,6 +280,12 @@ function DetailCard({
             className="object-cover"
           />
           <div className="absolute top-2 right-2 flex items-center gap-2">
+            <ShareButton
+              path={`/map?place=${destination.slug}`}
+              name={destination.name}
+              text={destination.blurb}
+              tone="overlay"
+            />
             <SaveButton
               slug={destination.slug}
               name={destination.name}

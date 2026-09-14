@@ -2,32 +2,42 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { authInitialState, signIn } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/app/actions";
+import type { AuthState } from "@/app/actions";
+import { startSession } from "@/lib/use-session";
 import { Field } from "@/components/auth/field";
 import {
   ArrowRightIcon,
   LockIcon,
-  MailIcon,
+  UserIcon,
 } from "@/components/ui/icons";
 import { SubmitButton } from "@/components/auth/form-parts";
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string }) {
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(
-    signIn,
-    authInitialState,
+    async (previous: AuthState, formData: FormData) => {
+      const result = await signIn(previous, formData);
+      if (result.status === "success") {
+        startSession({ name: result.values?.username ?? "" }, next);
+        router.replace(next ?? "/");
+      }
+      return result;
+    },
+    { status: "idle", message: "" } satisfies AuthState,
   );
 
   return (
     <form action={formAction} noValidate className="space-y-5">
       <Field
-        label="Email"
-        name="email"
-        type="email"
-        icon={MailIcon}
-        placeholder="you@example.com"
-        autoComplete="email"
-        defaultValue={state.values?.email}
-        error={state.errors?.email}
+        label="Username or email"
+        name="identifier"
+        icon={UserIcon}
+        placeholder="Your username or email"
+        autoComplete="username"
+        defaultValue={state.values?.identifier}
+        error={state.errors?.identifier}
       />
 
       <div>

@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { RegionExplorer } from "@/components/regions/region-explorer";
 import { ArrowRightIcon, CompassIcon, MapPinIcon } from "@/components/ui/icons";
 import { tourismRegions } from "@/lib/data";
-import { getRegionDetail, regionDetails } from "@/lib/regions";
+import { coverageSlug, getRegionDetail, regionDetails } from "@/lib/regions";
 
 export function generateStaticParams() {
   return regionDetails.map((region) => ({ slug: region.slug }));
@@ -137,7 +137,7 @@ export default async function RegionPage({
       </section>
 
       {region.coverage ? (
-        <section className="bg-sand-100 py-16 lg:py-20">
+        <section id="coverage" className="scroll-mt-24 bg-sand-100 py-16 lg:py-20">
           <div className="page-x">
             <h2 className="font-display text-2xl font-semibold text-sand-900 sm:text-3xl">
               {region.coverageTitle}
@@ -174,7 +174,16 @@ export default async function RegionPage({
                     </p>
 
                     <h3 className="mt-2 font-display text-xl font-semibold text-sand-900">
-                      {era.name}
+                      {era.detail ? (
+                        <Link
+                          href={`/regions/${region.slug}/stories/${coverageSlug(era)}`}
+                          className="hover:text-brand-700"
+                        >
+                          {era.name}
+                        </Link>
+                      ) : (
+                        era.name
+                      )}
                       {era.altName ? (
                         <span className="text-sand-400"> · {era.altName}</span>
                       ) : null}
@@ -188,6 +197,16 @@ export default async function RegionPage({
                     <p className="mt-2 max-w-2xl text-sm leading-relaxed text-sand-600">
                       {era.body}
                     </p>
+
+                    {era.detail ? (
+                      <Link
+                        href={`/regions/${region.slug}/stories/${coverageSlug(era)}`}
+                        className="group mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
+                      >
+                        Read the full story
+                        <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    ) : null}
                   </div>
                 </li>
               ))}

@@ -29,7 +29,7 @@ export function PopularNow() {
           }
         />
 
-        <ol className="mt-12 grid gap-3 lg:grid-cols-2 lg:gap-x-5">
+        <ol className="mt-12 grid grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-x-5">
           {popularPicks.map((pick, index) => (
             <li key={`${pick.region}/${pick.place}`}>
               <PopularRow pick={pick} rank={index + 1} />

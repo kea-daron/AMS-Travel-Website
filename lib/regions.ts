@@ -20,6 +20,8 @@ export type RegionDestination = {
   category: string;
   /** Extra labels shown beside the category, e.g. Homestay, Trail. */
   tags?: string[];
+  /** For stays: what the place offers, most useful first. */
+  facilities?: string[];
   /** Values for the region's faceted filters, keyed by facet name. */
   facets?: Record<string, string>;
   blurb: string;
@@ -44,6 +46,13 @@ export type RegionCoverageItem = {
   altName?: string;
   nameKh?: string;
   body: string;
+  /** The fuller story, one string per paragraph, behind "Read more". */
+  detail?: string[];
+  /** Destinations to visit for this step, as `region/slug`. */
+  visit?: string[];
+  /** Where it was, for the map on the step's own page. */
+  lat?: number;
+  lng?: number;
 };
 
 export type RegionDetail = {
@@ -151,70 +160,131 @@ export const regionDetails: RegionDetail[] = [
         kicker: "c. 600 – 700 CE",
         badge: "Pre-Angkor Period",
         name: "Ishanapura",
+        lat: 12.8722,
+        lng: 105.04,
         altName: "Sambor Prei Kuk",
         nameKh: "ឦសានបុរី",
         body: "Capital of Chenla under Isanavarman I, and the first place Khmer temple architecture settled into a form of its own.",
+        detail: [
+          "Ishanapura was the capital of Chenla, the kingdom that grew out of Funan along the Mekong. It takes its name from Isanavarman I, who ruled in the early seventh century, and Chinese chronicles of the Sui dynasty describe it as a large walled city.",
+          "More than a hundred brick temples survive in the forest, in three main groups — Prasat Sambor, Prasat Tao with its guardian lions, and Prasat Yeai Poeun. Many towers are octagonal, a form found almost nowhere else, and their walls carry carved “flying palaces”: miniature buildings in brick relief.",
+          "The site became a UNESCO World Heritage Site in 2017. It lies about 30 km by road from Kampong Thom town, and the community homestays beside the temples make it easy to stay the night and see them at dawn.",
+        ],
+        visit: ["ancient-capitals/sambor-prei-kuk", "eco-community/sambor-prei-kuk-homestay"],
       },
       {
         order: 2,
         kicker: "802 – c. 835 CE",
         badge: "Angkor Period",
         name: "Mahendraparvata",
+        lat: 13.5833,
+        lng: 104.05,
         altName: "Phnom Kulen",
         nameKh: "មហេន្ទ្របវ៌ត",
         body: "The mountain city where Jayavarman II declared himself universal monarch in 802, the act that begins the Angkorian era.",
+        detail: [
+          "Jayavarman II spent years bringing the region under his control before climbing the Kulen plateau. There, in 802, a Brahmin priest performed the rite that made him chakravartin — a universal monarch — and declared the Khmer free of “Java”. The event is known from the Sdok Kok Thom inscription, carved some 250 years later.",
+          "For centuries the city itself was more legend than map. Airborne laser scanning (lidar) in 2012 changed that, revealing roads, dykes, temple mounds and a planned urban grid hidden under the forest canopy.",
+          "Phnom Kulen is now a national park and one of the most sacred places in Cambodia. Pilgrims come for the lingas carved into the riverbed at Kbal Spean, the waterfalls, and the sixteenth-century reclining Buddha of Preah Ang Thom.",
+        ],
+        visit: ["ancient-capitals/phnom-kulen", "mountain-waterfall/kbal-spean"],
       },
       {
         order: 3,
         kicker: "c. 835 – 889 CE",
         badge: "Angkor Period",
         name: "Hariharalaya",
+        lat: 13.3383,
+        lng: 103.9736,
         altName: "Roluos",
         nameKh: "ហរិហរាល័យ",
         body: "The plain below the mountain, where Indravarman I built the first state temple and the first great reservoir.",
+        detail: [
+          "Jayavarman II came down from the mountain to Hariharalaya — “the city of Hari-Hara”, a god who is half Vishnu, half Shiva. It was here, on the plain south-east of today’s Siem Reap, that the Khmer kings first built on a monumental scale.",
+          "Indravarman I, crowned in 877, set the pattern every later king followed: first a temple to his ancestors, Preah Ko (879); then a state temple in the form of a stepped mountain, Bakong (881); then a great reservoir, the Indratataka, to hold the monsoon rains for the dry months.",
+          "His son Yasovarman I added Lolei on an island in the middle of that reservoir in 893 — and then moved the capital north to found Angkor. The Roluos group is about 13 km from Siem Reap and far quieter than the temples that came after it.",
+        ],
       },
       {
         order: 4,
         kicker: "889 – c. 1431 CE",
         badge: "Angkor Period",
         name: "Yasodharapura",
+        lat: 13.4125,
+        lng: 103.867,
         altName: "Angkor",
         nameKh: "យសោធរបុរី",
         body: "Five centuries of capital on one site — Angkor Wat, Angkor Thom, and the largest pre-industrial city in the world.",
+        detail: [
+          "Yasovarman I founded Yasodharapura around the hill of Phnom Bakheng, crowned with its state temple around 900. For most of the next five centuries, whichever king ruled, he ruled from here — adding reservoirs, temples and walled cities one beside the other.",
+          "Suryavarman II built Angkor Wat in the first half of the twelfth century, dedicated to Vishnu and aligned so the equinox sun rises over its central tower. After the Cham sacked the city in 1177, Jayavarman VII rebuilt it as Angkor Thom, with the Bayon at its centre and Buddhism as the state religion, and raised Ta Prohm and Preah Khan besides.",
+          "Lidar and ground surveys show that greater Angkor sprawled across roughly a thousand square kilometres, making it the largest pre-industrial city known. The court moved south after the Siamese took the city in 1431, but Angkor Wat was never abandoned — it has been a Buddhist monastery ever since. The park has been a UNESCO World Heritage Site since 1992.",
+        ],
+        visit: ["ancient-capitals/angkor-wat", "ancient-capitals/bayon-temple", "ancient-capitals/ta-prohm", "ancient-capitals/banteay-srei"],
       },
       {
         order: 5,
         kicker: "928 – 944 CE",
         badge: "Angkor Period",
         name: "Lingapura",
+        lat: 13.7833,
+        lng: 104.5333,
         altName: "Koh Ker",
         nameKh: "លិង្គបុរី",
         body: "Jayavarman IV moved the court a hundred kilometres north-east and raised a seven-tier pyramid. It lasted sixteen years.",
+        detail: [
+          "From 928 Jayavarman IV ruled from Lingapura, also called Chok Gargyar, deep in what is now Preah Vihear province. Whether he seized the throne or had simply built a rival capital of his own is still argued over.",
+          "In barely sixteen years his court built dozens of temples on a colossal scale, with sculpture to match: giant sandstone warriors and fighting monkey-kings, many looted during the civil war and only recently returned from museums abroad. At the heart of the city stands Prasat Thom, a seven-tiered pyramid about 36 m high.",
+          "In 944 Rajendravarman II took the court back to Angkor and the forest closed over Koh Ker. Long cut off by landmines, it was cleared and opened up in the 2000s, and became a UNESCO World Heritage Site in 2023.",
+        ],
+        visit: ["ancient-capitals/koh-ker"],
       },
       {
         order: 6,
         kicker: "1528 – 1594 CE",
         badge: "Post-Angkor Period",
         name: "Longvek",
+        lat: 11.8656,
+        lng: 104.758,
         nameKh: "លង្វែក",
         body: "The walled river capital of Ang Chan I, at the centre of Cambodia's maritime trade with China and the Malay world.",
+        detail: [
+          "After Angkor, the court moved south towards the rivers, where the wealth now was. Ang Chan I (r. 1516–1566) built Longvek on the Tonle Sap river in today’s Kampong Chhnang province, defended by walls, moats and — so the story goes — thickets of spiny bamboo.",
+          "Longvek was a trading city. Chinese, Malay, Portuguese and Spanish merchants came through it, and in the 1550s the Portuguese friar Gaspar da Cruz became one of the first Europeans to write about Cambodia.",
+          "It fell to the Siamese army of King Naresuan in 1594. Cambodians still tell how the besiegers fired silver coins into the bamboo, and the defenders cut down their own walls to collect them. Little stands today beyond the low ridge, a modern pagoda and the stories.",
+        ],
       },
       {
         order: 7,
         kicker: "1618 – 1866 CE",
         badge: "Post-Angkor Period",
         name: "Oudong",
+        lat: 11.7947,
+        lng: 104.7685,
         nameKh: "ឧដុង្គ",
         body: "Two and a half centuries of capital on a low ridge, crowned by the stupas of the kings buried there.",
+        detail: [
+          "Chey Chettha II moved the court to Oudong in 1618, and it stayed there, on and off, for nearly two and a half centuries — through long wars with Siam and Vietnam, which by the 1800s both claimed the right to crown Cambodia’s kings.",
+          "The kings are remembered on the ridge of Phnom Oudong, about 40 km by road north-west of Phnom Penh, in a line of stupas and shrines reached by long stairways, among them the stupas of King Ang Duong and King Monivong.",
+          "In 1866, three years after France declared a protectorate, King Norodom left Oudong for Phnom Penh. The ridge is now a weekend pilgrimage for Phnom Penh families, with food stalls at the foot of the stairs.",
+        ],
       },
       {
         order: 8,
         kicker: "1866 CE – present",
         badge: "Post-Angkor Period",
         name: "Chaktomuk",
+        lat: 11.5636,
+        lng: 104.9312,
         altName: "Phnom Penh",
         nameKh: "ចតុមុខ",
         body: "The capital returns to the four-rivers junction it first held in 1434. Norodom I builds the Royal Palace here in 1866.",
+        detail: [
+          "Phnom Penh stands where four waters meet — the upper and lower Mekong, the Tonle Sap and the Bassac — which is what Chaktomuk, “four faces”, means. Ponhea Yat brought the court here in 1434 after leaving Angkor, though it soon moved on again.",
+          "The city’s own name comes from a legend: in the fourteenth century a woman called Daun Penh found Buddha images in a tree washed up by the river, and raised a hill — a phnom — to shelter them. That hill is today’s Wat Phnom.",
+          "When Norodom I returned the capital here in 1866, a colonial city was laid out around the palace he built that year, and the Silver Pagoda followed within its walls, floored with more than five thousand silver tiles. Emptied by the Khmer Rouge on 17 April 1975, the city was resettled from 1979 and is now home to more than two million people.",
+        ],
+        visit: ["ancient-capitals/royal-palace", "ancient-capitals/national-museum", "urban-nightlife/wat-phnom-walk"],
       },
     ],
     categories: [
@@ -596,8 +666,8 @@ export const regionDetails: RegionDetail[] = [
       { slug: "phnom-aural", name: "Phnom Aural", nameKh: "ភ្នំឧរ៉ាល់", province: "Kampong Speu", category: "Trekking", tags: ["Peak", "Hiking", "Camping"], blurb: "The highest peak in Cambodia at 1,813 m, a hard two-day climb with a guide.", verified: true, featured: true, lat: 12.0333, lng: 104.1667, image: img.mountainCloud },
       { slug: "kbal-spean", name: "Kbal Spean", nameKh: "ក្បាលស្ពាន", province: "Siem Reap", category: "Trekking", tags: ["Hiking", "Trail"], blurb: "A forty-minute climb through forest to a riverbed carved with a thousand lingas.", verified: true, lat: 13.6667, lng: 103.95, image: img.forestWalkers },
       { slug: "areng-valley", name: "Areng Valley", nameKh: "អារ៉ែង", province: "Koh Kong", category: "Trekking", tags: ["Trail", "Camping", "Landscape"], blurb: "A valley the community kept from being dammed, now walked rather than flooded.", verified: true, lat: 11.5, lng: 103.3, image: img.forestBridge },
-      { slug: "kirirom", name: "Kirirom National Park", nameKh: "គិរីរម្យ", province: "Kampong Speu", category: "Camping", tags: ["Camping", "Trail", "Landscape"], blurb: "Pine forest cool enough to need a jacket, two hours from Phnom Penh.", verified: true, featured: true, lat: 11.3167, lng: 104.05, image: img.pineRoad },
-      { slug: "osoam", name: "Osoam Cardamom Community", province: "Pursat", category: "Camping", tags: ["Camping", "Trail"], blurb: "A village centre deep in the range, and the usual base for multi-day walks into it.", verified: true, lat: 12.05, lng: 103.2, image: img.jungleVillage },
+      { slug: "kirirom", name: "Kirirom National Park", nameKh: "គិរីរម្យ", province: "Kampong Speu", category: "Camping", facilities: ["Camping ground", "Walking trails", "Restaurant", "Parking"], tags: ["Camping", "Trail", "Landscape"], blurb: "Pine forest cool enough to need a jacket, two hours from Phnom Penh.", verified: true, featured: true, lat: 11.3167, lng: 104.05, image: img.pineRoad },
+      { slug: "osoam", name: "Osoam Cardamom Community", province: "Pursat", category: "Camping", facilities: ["Tents provided", "Guided treks", "Home-cooked meals", "Local guide"], tags: ["Camping", "Trail"], blurb: "A village centre deep in the range, and the usual base for multi-day walks into it.", verified: true, lat: 12.05, lng: 103.2, image: img.jungleVillage },
       { slug: "chi-phat", name: "Chi Phat", province: "Koh Kong", category: "Cycling", tags: ["Trail", "Camping"], blurb: "A former logging village turned trekking base, with mountain-bike routes cut by the community.", verified: true, lat: 11.3167, lng: 103.4667, image: img.jungleVillage },
       { slug: "kampot-kep-loop", name: "Kampot – Kep Countryside Loop", province: "Kampot", category: "Cycling", tags: ["Trail", "Landscape"], blurb: "Forty flat kilometres between pepper farms, salt pans and the karst outcrops.", verified: true, lat: 10.55, lng: 104.28, image: img.dirtRoad },
       { slug: "phnom-sampeau", name: "Phnom Sampeau", nameKh: "ភ្នំសំពៅ", province: "Battambang", category: "Viewpoint", tags: ["Sunset", "Landscape"], blurb: "The bat cave empties in a ribbon at dusk, watched from the road below.", verified: true, featured: true, lat: 13.0333, lng: 103.1333, image: img.townAerial },
@@ -776,10 +846,10 @@ export const regionDetails: RegionDetail[] = [
     categories: ["Homestay", "Village", "Craft", "Agriculture", "Eco Lodge", "Bird Watching", "Local Guide"],
     filterTags: ["Homestay", "Community", "Cycling", "Farm", "Local Food", "Fishing"],
     destinations: [
-      { slug: "banteay-chhmar-homestay", name: "Banteay Chhmar Homestay", nameKh: "បន្ទាយឆ្មារ", province: "Banteay Meanchey", category: "Homestay", tags: ["Homestay", "Community", "Local Food"], blurb: "Sleep in the village beside a Jayavarman VII temple city, with dinner cooked at the house.", verified: true, featured: true, lat: 14.0333, lng: 103.0833, image: img.monk },
-      { slug: "koh-trong-homestay", name: "Koh Trong Homestays", nameKh: "កោះទ្រង់", province: "Kratié", category: "Homestay", tags: ["Homestay", "Cycling", "Farm"], blurb: "Family houses on a Mekong sandbank island, reached by the little ferry from Kratié.", verified: true, lat: 12.4667, lng: 106.0167, image: img.pathWater },
-      { slug: "chambok-cbet", name: "Chambok CBET", nameKh: "ចំបក់", province: "Kampong Speu", category: "Homestay", tags: ["Homestay", "Community", "Cycling"], blurb: "One of the country's oldest community projects, with ox-cart rides, a waterfall trail and thirty host families.", verified: true, featured: true, lat: 11.35, lng: 104.1167, image: img.waterfallForest },
-      { slug: "sambor-prei-kuk-homestay", name: "Sambor Prei Kuk Homestays", nameKh: "សំបូរព្រៃគុក", province: "Kampong Thom", category: "Homestay", tags: ["Homestay", "Community", "Local Food"], blurb: "Village stays beside the pre-Angkorian brick towers, with guiding by people who grew up among them.", verified: true, lat: 12.8722, lng: 105.04, image: img.brickTower },
+      { slug: "banteay-chhmar-homestay", name: "Banteay Chhmar Homestay", nameKh: "បន្ទាយឆ្មារ", province: "Banteay Meanchey", category: "Homestay", facilities: ["Home-cooked meals", "Mosquito nets", "Bicycles", "Local guide"], tags: ["Homestay", "Community", "Local Food"], blurb: "Sleep in the village beside a Jayavarman VII temple city, with dinner cooked at the house.", verified: true, featured: true, lat: 14.0333, lng: 103.0833, image: img.monk },
+      { slug: "koh-trong-homestay", name: "Koh Trong Homestays", nameKh: "កោះទ្រង់", province: "Kratié", category: "Homestay", facilities: ["Home-cooked meals", "Mosquito nets", "Bicycles", "Boat transfers"], tags: ["Homestay", "Cycling", "Farm"], blurb: "Family houses on a Mekong sandbank island, reached by the little ferry from Kratié.", verified: true, lat: 12.4667, lng: 106.0167, image: img.pathWater },
+      { slug: "chambok-cbet", name: "Chambok CBET", nameKh: "ចំបក់", province: "Kampong Speu", category: "Homestay", facilities: ["Home-cooked meals", "Mosquito nets", "Guided treks", "Local guide"], tags: ["Homestay", "Community", "Cycling"], blurb: "One of the country's oldest community projects, with ox-cart rides, a waterfall trail and thirty host families.", verified: true, featured: true, lat: 11.35, lng: 104.1167, image: img.waterfallForest },
+      { slug: "sambor-prei-kuk-homestay", name: "Sambor Prei Kuk Homestays", nameKh: "សំបូរព្រៃគុក", province: "Kampong Thom", category: "Homestay", facilities: ["Home-cooked meals", "Mosquito nets", "Bicycles", "Local guide"], tags: ["Homestay", "Community", "Local Food"], blurb: "Village stays beside the pre-Angkorian brick towers, with guiding by people who grew up among them.", verified: true, lat: 12.8722, lng: 105.04, image: img.brickTower },
       { slug: "areng-valley", name: "Areng Valley", nameKh: "អារ៉ែង", province: "Koh Kong", category: "Village", tags: ["Community", "Homestay"], blurb: "A valley the community kept from being dammed, now open for stays and river trips.", verified: true, lat: 11.5, lng: 103.3, image: img.riverForest },
       { slug: "kampong-phluk-cbet", name: "Kampong Phluk Boat Cooperative", nameKh: "កំពង់ភ្លុក", province: "Siem Reap", category: "Village", tags: ["Fishing", "Community", "Local Food"], blurb: "Village-run rowing boats into the flooded forest, rather than the big tour launches.", verified: true, lat: 13.1833, lng: 103.9833, image: img.floatingVillage },
       { slug: "trapeang-sangkae", name: "Trapeang Sangkae", nameKh: "ត្រពាំងសង្កែ", province: "Kampot", category: "Village", tags: ["Fishing", "Community"], blurb: "A fishing community that replanted its own mangrove, and now guides boats through it.", verified: true, lat: 10.6, lng: 104.2333, image: img.riverForest },
@@ -790,9 +860,9 @@ export const regionDetails: RegionDetail[] = [
       { slug: "community-farms", name: "Community Rice Farms", province: "Battambang", category: "Agriculture", tags: ["Farm", "Community", "Cycling"], blurb: "Farm stays in the rice belt, with the day's work starting well before the heat.", verified: true, lat: 13.05, lng: 103.25, image: img.riceAerial },
       { slug: "pepper-smallholders", name: "Pepper Smallholder Cooperatives", province: "Kampot", category: "Agriculture", tags: ["Farm", "Community"], blurb: "Family plots inside the protected-origin zone, selling under a shared cooperative label.", verified: true, lat: 10.65, lng: 104.25, image: img.boatsMountains },
       { slug: "palm-sugar-coops", name: "Palm Sugar Cooperatives", province: "Kampong Speu", category: "Agriculture", tags: ["Farm", "Community", "Local Food"], blurb: "Tapping families organised under the geographical indication, boiling sap the same morning it is cut.", verified: true, lat: 11.45, lng: 104.5167, image: img.paddy },
-      { slug: "evp", name: "Elephant Valley Project", province: "Mondulkiri", category: "Eco Lodge", tags: ["Community"], blurb: "Retired elephants in forest, with Bunong mahouts employed to walk with them.", verified: true, featured: true, lat: 12.4, lng: 107.15, image: img.forestBridge },
-      { slug: "osoam", name: "Osoam Cardamom Community Centre", province: "Pursat", category: "Eco Lodge", tags: ["Community", "Homestay"], blurb: "A village centre deep in the Cardamoms, and the usual base for multi-day walks into the range.", verified: true, lat: 12.05, lng: 103.2, image: img.jungleVillage },
-      { slug: "andoung-kraloeng", name: "Andoung Kraloeng Gibbon Camp", province: "Mondulkiri", category: "Eco Lodge", tags: ["Community", "Homestay"], blurb: "A Bunong-run forest camp in Keo Seima, and dawn treks to habituated yellow-cheeked gibbons.", verified: true, lat: 12.2, lng: 106.9, image: img.forestWalkers },
+      { slug: "evp", name: "Elephant Valley Project", province: "Mondulkiri", category: "Eco Lodge", facilities: ["Meals included", "Guided treks", "Solar power", "Local guide"], tags: ["Community"], blurb: "Retired elephants in forest, with Bunong mahouts employed to walk with them.", verified: true, featured: true, lat: 12.4, lng: 107.15, image: img.forestBridge },
+      { slug: "osoam", name: "Osoam Cardamom Community Centre", province: "Pursat", category: "Eco Lodge", facilities: ["Home-cooked meals", "Guided treks", "Mosquito nets", "Local guide"], tags: ["Community", "Homestay"], blurb: "A village centre deep in the Cardamoms, and the usual base for multi-day walks into the range.", verified: true, lat: 12.05, lng: 103.2, image: img.jungleVillage },
+      { slug: "andoung-kraloeng", name: "Andoung Kraloeng Gibbon Camp", province: "Mondulkiri", category: "Eco Lodge", facilities: ["Tents provided", "Meals included", "Guided treks", "Local guide"], tags: ["Community", "Homestay"], blurb: "A Bunong-run forest camp in Keo Seima, and dawn treks to habituated yellow-cheeked gibbons.", verified: true, lat: 12.2, lng: 106.9, image: img.forestWalkers },
       { slug: "prek-toal-cbet", name: "Prek Toal Community", nameKh: "ព្រែកទាល់", province: "Battambang", category: "Bird Watching", tags: ["Community", "Fishing"], blurb: "Former egg collectors now guard the colony and guide the boats into it.", verified: true, featured: true, lat: 13.15, lng: 103.6333, image: img.riverTrees },
       { slug: "tmatboey", name: "Tmatboey Ibis Site", nameKh: "ត្មាតបើយ", province: "Preah Vihear", category: "Bird Watching", tags: ["Community", "Homestay"], blurb: "A village in Kulen Promtep that protects nesting giant and white-shouldered ibis, and is paid per sighting.", detail: "A village of a few hundred families inside Kulen Promtep Wildlife Sanctuary, and the best place in the world to see giant ibis — a bird down to a few hundred pairs, almost all of them in northern Cambodia. The arrangement is direct: the community protects the nests, and visitors pay a conservation contribution on top of the stay, with a bonus paid to the village when a bird is seen. Best from December to May, when the water is down.", verified: true, featured: true, lat: 13.9333, lng: 104.9167, image: img.dirtPath },
       { slug: "ang-trapeang-thmor-cbet", name: "Ang Trapeang Thmor", province: "Banteay Meanchey", category: "Bird Watching", tags: ["Community", "Farm"], blurb: "Sarus cranes on a Khmer Rouge-era reservoir, watched from the village that farms around it.", verified: true, lat: 13.8, lng: 103.3, image: img.riceAerial },
@@ -824,12 +894,12 @@ export const regionDetails: RegionDetail[] = [
     categories: ["Luxury Hotel", "Private Island", "Golf", "Helicopter", "Yacht", "Private Guide", "Fine Dining", "Spa", "VIP Tour"],
     filterTags: ["Luxury", "5 Stars", "Private", "Exclusive", "Helicopter", "Golf Spa"],
     destinations: [
-      { slug: "siem-reap-boutique", name: "Siem Reap Boutique Stays", province: "Siem Reap", category: "Luxury Hotel", tags: ["Luxury", "5 Stars"], blurb: "Small properties in the lanes off Wat Bo, most under thirty rooms and built around a courtyard.", verified: true, featured: true, lat: 13.3563, lng: 103.8622, image: img.resortPool },
-      { slug: "pp-riverside-hotels", name: "Phnom Penh Riverside Hotels", province: "Phnom Penh", category: "Luxury Hotel", tags: ["Luxury", "5 Stars"], blurb: "Colonial-era and contemporary rooms looking over the four-rivers junction.", verified: true, lat: 11.5683, lng: 104.9308, image: img.cityRiverNight },
-      { slug: "kep-villas", name: "Kep Hillside Villas", province: "Kep", category: "Luxury Hotel", tags: ["Private", "Luxury"], blurb: "Villas on the slope above the bay, with the crab market ten minutes below.", verified: true, lat: 10.4833, lng: 104.3, image: img.jetty },
-      { slug: "kampot-retreats", name: "Kampot Riverside Retreats", province: "Kampot", category: "Luxury Hotel", tags: ["Luxury", "Private"], blurb: "Low-key riverside properties with the Bokor range standing behind them.", verified: true, lat: 10.6, lng: 104.16, image: img.kampotNight },
-      { slug: "private-islands", name: "Private Island Retreats", province: "Preah Sihanouk", category: "Private Island", tags: ["Exclusive", "Private", "Luxury"], blurb: "Whole-island properties in the Koh Rong archipelago, reached by private launch.", verified: true, featured: true, lat: 10.6667, lng: 103.25, image: img.poolPalms },
-      { slug: "inner-island-villas", name: "Inner Island Villas", province: "Preah Sihanouk", category: "Private Island", tags: ["Private", "Luxury", "Exclusive"], blurb: "Beachfront villas on the closer islands, thirty minutes out rather than two hours.", verified: true, lat: 10.5667, lng: 103.3833, image: img.islandAerial },
+      { slug: "siem-reap-boutique", name: "Siem Reap Boutique Stays", province: "Siem Reap", category: "Luxury Hotel", facilities: ["24-hour front desk", "Free Wi-Fi", "Swimming pool", "Restaurant", "Airport transfer", "Spa"], tags: ["Luxury", "5 Stars"], blurb: "Small properties in the lanes off Wat Bo, most under thirty rooms and built around a courtyard.", verified: true, featured: true, lat: 13.3563, lng: 103.8622, image: img.resortPool },
+      { slug: "pp-riverside-hotels", name: "Phnom Penh Riverside Hotels", province: "Phnom Penh", category: "Luxury Hotel", facilities: ["24-hour front desk", "Free Wi-Fi", "Restaurant", "Swimming pool", "Bar", "Air-conditioning"], tags: ["Luxury", "5 Stars"], blurb: "Colonial-era and contemporary rooms looking over the four-rivers junction.", verified: true, lat: 11.5683, lng: 104.9308, image: img.cityRiverNight },
+      { slug: "kep-villas", name: "Kep Hillside Villas", province: "Kep", category: "Luxury Hotel", facilities: ["Swimming pool", "Free Wi-Fi", "Restaurant", "Air-conditioning", "Parking"], tags: ["Private", "Luxury"], blurb: "Villas on the slope above the bay, with the crab market ten minutes below.", verified: true, lat: 10.4833, lng: 104.3, image: img.jetty },
+      { slug: "kampot-retreats", name: "Kampot Riverside Retreats", province: "Kampot", category: "Luxury Hotel", facilities: ["Free Wi-Fi", "Restaurant", "Swimming pool", "Kayaks", "Bicycles"], tags: ["Luxury", "Private"], blurb: "Low-key riverside properties with the Bokor range standing behind them.", verified: true, lat: 10.6, lng: 104.16, image: img.kampotNight },
+      { slug: "private-islands", name: "Private Island Retreats", province: "Preah Sihanouk", category: "Private Island", facilities: ["Beachfront", "Boat transfers", "Restaurant", "Spa", "Snorkelling gear"], tags: ["Exclusive", "Private", "Luxury"], blurb: "Whole-island properties in the Koh Rong archipelago, reached by private launch.", verified: true, featured: true, lat: 10.6667, lng: 103.25, image: img.poolPalms },
+      { slug: "inner-island-villas", name: "Inner Island Villas", province: "Preah Sihanouk", category: "Private Island", facilities: ["Beachfront", "Boat transfers", "Restaurant", "Free Wi-Fi", "Snorkelling gear"], tags: ["Private", "Luxury", "Exclusive"], blurb: "Beachfront villas on the closer islands, thirty minutes out rather than two hours.", verified: true, lat: 10.5667, lng: 103.3833, image: img.islandAerial },
       { slug: "angkor-golf", name: "Siem Reap Golf Courses", province: "Siem Reap", category: "Golf", tags: ["Golf Spa", "Luxury"], blurb: "Championship courses a few minutes from the temples, playable year round.", verified: true, lat: 13.3833, lng: 103.8167, image: img.poolPalms },
       { slug: "pp-golf", name: "Phnom Penh Golf Courses", province: "Phnom Penh", category: "Golf", tags: ["Golf Spa", "Luxury"], blurb: "Full-length courses on the city's northern and western edges, an easy morning from town.", verified: true, lat: 11.6167, lng: 104.8667, image: img.paddy },
       { slug: "angkor-helicopter", name: "Helicopter Tours over Angkor", province: "Siem Reap", category: "Helicopter", tags: ["Helicopter", "Private", "Exclusive"], blurb: "Angkor from the air, the only way to read the full plan of the city at once.", verified: true, featured: true, lat: 13.4125, lng: 103.867, image: img.angkorWat },
@@ -852,6 +922,28 @@ export const regionDetails: RegionDetail[] = [
 
 export function getRegionDetail(slug: string) {
   return regionDetails.find((region) => region.slug === slug);
+}
+
+/** A timeline step's URL segment, made from its name ("Ishanapura" → "ishanapura"). */
+export function coverageSlug(item: RegionCoverageItem) {
+  return item.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** A step with its own page — only those with a full story have one. */
+export function getCoverageStory(regionSlug: string, storySlug: string) {
+  const region = getRegionDetail(regionSlug);
+  const steps = region?.coverage ?? [];
+  const index = steps.findIndex(
+    (item) => item.detail && coverageSlug(item) === storySlug,
+  );
+  return region && index !== -1
+    ? { region, item: steps[index], index, steps }
+    : undefined;
 }
 
 export function getRegionDestination(regionSlug: string, placeSlug: string) {

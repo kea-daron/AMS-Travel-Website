@@ -9,13 +9,16 @@ type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 type FieldProps = {
   label: string;
   name: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "tel";
   icon: Icon;
   placeholder?: string;
   autoComplete?: string;
   defaultValue?: string;
   error?: string;
   hint?: string;
+  /** Fields are required unless marked otherwise. */
+  required?: boolean;
+  maxLength?: number;
 };
 
 const inputClass =
@@ -32,6 +35,8 @@ export function Field({
   defaultValue,
   error,
   hint,
+  required = true,
+  maxLength,
 }: FieldProps) {
   const id = useId();
   const [revealed, setRevealed] = useState(false);
@@ -54,7 +59,8 @@ export function Field({
           id={id}
           name={name}
           type={isPassword && revealed ? "text" : type}
-          required
+          required={required}
+          maxLength={maxLength}
           placeholder={placeholder}
           autoComplete={autoComplete}
           defaultValue={defaultValue}

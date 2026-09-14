@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { BookmarkIcon, MapIcon, ShieldIcon } from "@/components/ui/icons";
 import { authImage } from "@/lib/data";
@@ -77,9 +76,7 @@ export function AuthShell({
         <div className="flex items-center justify-center px-6 py-16 sm:px-10">
           <div className="w-full max-w-md">
             <div className="lg:hidden">
-              <Link href="/" aria-label="AMS Travel home">
-                <Logo />
-              </Link>
+              <Logo />
             </div>
 
             <h1 className="mt-8 font-display text-3xl font-semibold tracking-tight text-sand-900 sm:text-4xl lg:mt-0">
