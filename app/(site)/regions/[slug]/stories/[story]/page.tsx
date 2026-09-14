@@ -6,10 +6,15 @@ import type { Metadata } from "next";
 import { CoverageMap } from "@/components/regions/coverage-map";
 import {
   ArrowRightIcon,
+  CompassIcon,
   ExternalLinkIcon,
+  LinkIcon,
   MapIcon,
   MapPinIcon,
+  ShieldIcon,
 } from "@/components/ui/icons";
+import { PhotoGallery } from "@/components/ui/photo-gallery";
+import { RatingCard } from "@/components/stays/stay-reviews";
 import {
   coverageSlug,
   getCoverageStory,
@@ -134,6 +139,12 @@ export default async function CoverageStoryPage({
             <span className="rounded-full bg-white/95 px-3 py-1 text-2xs font-bold uppercase tracking-wide text-brand-700">
               {item.badge}
             </span>
+            {item.verified ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1 text-2xs font-bold uppercase tracking-wide text-white ring-1 ring-white/25">
+                <ShieldIcon className="size-3" />
+                Verified
+              </span>
+            ) : null}
           </div>
 
           <h1 className="mt-5 max-w-3xl font-display text-4xl leading-tight font-semibold tracking-tight text-balance text-white sm:text-5xl lg:text-6xl">
@@ -152,6 +163,13 @@ export default async function CoverageStoryPage({
             {item.body}
           </p>
 
+          {item.location ? (
+            <p className="mt-5 inline-flex items-center gap-1.5 text-sm text-white/75">
+              <MapPinIcon className="size-4" />
+              {item.location}
+            </p>
+          ) : null}
+
           <p className="mt-6 text-sm text-white/60">
             Step {index + 1} of {steps.length} in {title}
           </p>
@@ -159,9 +177,47 @@ export default async function CoverageStoryPage({
       </header>
 
       <div className="page-x py-14 lg:py-20">
-        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
-          <div>
-            <div className="space-y-5">
+        {item.gallery && item.gallery.length > 0 ? (
+          <div className="mb-12">
+            <PhotoGallery images={item.gallery} title={item.name} />
+          </div>
+        ) : null}
+
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
+          <div className="min-w-0">
+            {item.quote ? (
+              <blockquote className="border-l-4 border-brand-300 pl-5 font-display text-xl leading-relaxed text-balance text-brand-800 sm:text-2xl">
+                “{item.quote}”
+              </blockquote>
+            ) : null}
+
+            {(item.categories?.length ?? 0) + (item.interests?.length ?? 0) > 0 ? (
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {item.categories?.map((name) => (
+                  <li key={`category-${name}`}>
+                    <Link
+                      href={`/regions/${region.slug}#destinations`}
+                      className="inline-flex items-center rounded-full bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-100"
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+                {item.interests?.map((name) => (
+                  <li key={`interest-${name}`}>
+                    <Link
+                      href="/explore/interests"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-sand-200 px-3 py-1.5 text-xs font-medium text-sand-600 transition-colors hover:border-brand-300 hover:text-brand-700"
+                    >
+                      <CompassIcon className="size-3.5 text-sand-400" />
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
+            <div className="mt-8 space-y-5">
               {item.detail!.map((paragraph, i) => (
                 <p
                   key={paragraph}
@@ -196,12 +252,37 @@ export default async function CoverageStoryPage({
                   {region.name}
                 </Link>
               </Fact>
+              {item.location ? <Fact label="Where it is">{item.location}</Fact> : null}
               {hasPin ? (
                 <Fact label="Coordinates">
                   {item.lat!.toFixed(4)}, {item.lng!.toFixed(4)}
                 </Fact>
               ) : null}
             </dl>
+
+            {item.sources && item.sources.length > 0 ? (
+              <>
+                <h2 className="mt-10 font-display text-xl font-semibold text-sand-900">
+                  Sources
+                </h2>
+                <ul className="mt-4 space-y-2">
+                  {item.sources.map((source) => (
+                    <li key={source.url}>
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-800"
+                      >
+                        <LinkIcon className="size-4 text-sand-400 group-hover:text-brand-600" />
+                        {source.label}
+                        <ExternalLinkIcon className="size-3.5 opacity-70" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
 
             {places.length > 0 ? (
               <>
@@ -248,7 +329,7 @@ export default async function CoverageStoryPage({
             ) : null}
           </div>
 
-          <aside className="lg:sticky lg:top-28 lg:self-start">
+          <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
             <div className="overflow-hidden rounded-3xl border border-sand-200 bg-white">
               <div className="relative h-80">
                 {pins.length > 0 ? (
@@ -287,6 +368,12 @@ export default async function CoverageStoryPage({
                 ) : null}
               </div>
             </div>
+
+            <RatingCard
+              stayKey={`story:${region.slug}/${story}`}
+              stayName={item.name}
+              path={`/regions/${region.slug}/stories/${story}`}
+            />
           </aside>
         </div>
 

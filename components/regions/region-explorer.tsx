@@ -3,7 +3,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ArrowRightIcon, FilterIcon, SearchIcon } from "@/components/ui/icons";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  FilterIcon,
+  SearchIcon,
+} from "@/components/ui/icons";
 import { DestinationCard } from "@/components/regions/destination-card";
 import type { RegionDestination } from "@/lib/regions";
 
@@ -35,7 +40,8 @@ export function RegionExplorer({
   facets?: string[];
   destinations: RegionDestination[];
 }) {
-  const [category, setCategory] = useState(ALL);
+  // Categories are multi-select: none picked means every category.
+  const [categorySelection, setCategorySelection] = useState<string[]>([]);
   const [query, setQuery] = useState("");
   const [view, setView] = useState<View>("cards");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
@@ -98,9 +104,10 @@ export function RegionExplorer({
     const needle = query.trim().toLowerCase();
     return destinations.filter((item) => {
       const inCategory =
-        category === ALL ||
-        item.category === category ||
-        item.tags?.includes(category);
+        categorySelection.length === 0 ||
+        categorySelection.some(
+          (name) => item.category === name || item.tags?.includes(name),
+        );
       const matches =
         !needle ||
         item.name.toLowerCase().includes(needle) ||
@@ -129,7 +136,15 @@ export function RegionExplorer({
         inCategory && matches && inProvince && hasTags && hasFlags && hasFacets
       );
     });
-  }, [category, destinations, query, province, tags, flags, facetValues]);
+  }, [
+    categorySelection,
+    destinations,
+    query,
+    province,
+    tags,
+    flags,
+    facetValues,
+  ]);
 
   const pins = useMemo(
     () =>
@@ -159,23 +174,55 @@ export function RegionExplorer({
         Explore by Category
       </h2>
 
+      <p className="mt-1.5 text-sm text-sand-500">
+        {categorySelection.length === 0
+          ? "Pick as many categories as you like."
+          : `${categorySelection.length} selected — showing anything in ${
+              categorySelection.length === 1 ? "it" : "any of them"
+            }.`}
+      </p>
+
       <ul className="mt-5 flex flex-wrap gap-2">
-        {[ALL, ...categories].map((item) => (
-          <li key={item}>
-            <button
-              type="button"
-              onClick={() => setCategory(item)}
-              aria-pressed={category === item}
-              className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-                category === item
-                  ? "btn-sweep"
-                  : "border border-sand-300 bg-white text-sand-600 hover:border-brand-300 hover:text-brand-700"
-              }`}
-            >
-              {item}
-            </button>
-          </li>
-        ))}
+        <li>
+          <button
+            type="button"
+            onClick={() => setCategorySelection([])}
+            aria-pressed={categorySelection.length === 0}
+            className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+              categorySelection.length === 0
+                ? "btn-sweep"
+                : "border border-sand-300 bg-white text-sand-600 hover:border-brand-300 hover:text-brand-700"
+            }`}
+          >
+            {ALL}
+          </button>
+        </li>
+        {categories.map((item) => {
+          const picked = categorySelection.includes(item);
+          return (
+            <li key={item}>
+              <button
+                type="button"
+                onClick={() =>
+                  setCategorySelection((current) =>
+                    picked
+                      ? current.filter((name) => name !== item)
+                      : [...current, item],
+                  )
+                }
+                aria-pressed={picked}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+                  picked
+                    ? "btn-sweep"
+                    : "border border-sand-300 bg-white text-sand-600 hover:border-brand-300 hover:text-brand-700"
+                }`}
+              >
+                {picked ? <CheckIcon className="size-3.5" /> : null}
+                {item}
+              </button>
+            </li>
+          );
+        })}
       </ul>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">

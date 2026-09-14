@@ -53,6 +53,19 @@ export type RegionCoverageItem = {
   /** Where it was, for the map on the step's own page. */
   lat?: number;
   lng?: number;
+  /** Checked against the sources listed below. */
+  verified?: boolean;
+  /** A line to carry the page, in the region's own voice. */
+  quote?: string;
+  /** Categories from the region's vocabulary, and site-wide interests. */
+  categories?: string[];
+  interests?: string[];
+  /** Where it stands today. */
+  location?: string;
+  /** Where the account comes from, for anyone who wants to read further. */
+  sources?: { label: string; url: string }[];
+  /** Extra photos for the step's own page. */
+  gallery?: string[];
 };
 
 export type RegionDetail = {
@@ -160,6 +173,15 @@ export const regionDetails: RegionDetail[] = [
         kicker: "c. 600 – 700 CE",
         badge: "Pre-Angkor Period",
         name: "Ishanapura",
+        verified: true,
+        quote: "Where Khmer temple building first found a shape of its own.",
+        categories: ["Ancient Cities", "Temples", "Archaeological Sites"],
+        interests: ["Ancient Cities", "Archaeological Sites"],
+        location: "Sambor Prei Kuk, Kampong Thom",
+        sources: [
+          { label: "Sambor Prei Kuk \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Sambor_Prei_Kuk" },
+        ],
+        gallery: [img.brickTower, img.ruinsTrees, img.monk, img.paddy],
         lat: 12.8722,
         lng: 105.04,
         altName: "Sambor Prei Kuk",
@@ -177,6 +199,16 @@ export const regionDetails: RegionDetail[] = [
         kicker: "802 – c. 835 CE",
         badge: "Angkor Period",
         name: "Mahendraparvata",
+        verified: true,
+        quote: "A mountain, a rite, and the beginning of the Angkorian era.",
+        categories: ["Ancient Cities", "Archaeological Sites"],
+        interests: ["Ancient Cities", "Rivers & Waterfalls"],
+        location: "Phnom Kulen, Siem Reap",
+        sources: [
+          { label: "Mahendraparvata \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Mahendraparvata" },
+          { label: "Phnom Kulen \u2014 Tourism Cambodia", url: "https://www.tourismcambodia.com/attractions/phnom-kulen.htm" },
+        ],
+        gallery: [img.waterfallForest, img.treetops, img.pathWater, img.statue],
         lat: 13.5833,
         lng: 104.05,
         altName: "Phnom Kulen",
@@ -194,6 +226,16 @@ export const regionDetails: RegionDetail[] = [
         kicker: "c. 835 – 889 CE",
         badge: "Angkor Period",
         name: "Hariharalaya",
+        verified: true,
+        quote: "The first state temple, the first great reservoir.",
+        categories: ["Ancient Cities", "Temples"],
+        interests: ["Ancient Cities", "Temples"],
+        location: "Roluos, Siem Reap",
+        sources: [
+          { label: "Hariharalaya \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Hariharalaya" },
+          { label: "Roluos Group \u2014 Tourism Cambodia", url: "https://www.tourismcambodia.com/attractions/roluos-group.htm" },
+        ],
+        gallery: [img.ruins, img.causeway, img.paleStatue, img.paddy],
         lat: 13.3383,
         lng: 103.9736,
         altName: "Roluos",
@@ -210,6 +252,16 @@ export const regionDetails: RegionDetail[] = [
         kicker: "889 – c. 1431 CE",
         badge: "Angkor Period",
         name: "Yasodharapura",
+        verified: true,
+        quote: "Five centuries on one site, and the largest city of its age.",
+        categories: ["Ancient Cities", "Temples", "Archaeological Sites"],
+        interests: ["Ancient Cities", "Temples"],
+        location: "Angkor, Siem Reap",
+        sources: [
+          { label: "Ya\u015bodharapura \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Yasodharapura" },
+          { label: "Angkor Wat \u2014 Tourism Cambodia", url: "https://www.tourismcambodia.com/attractions/angkor-wat.htm" },
+        ],
+        gallery: [img.angkorWat, img.taProhm, img.causeway, img.monk],
         lat: 13.4125,
         lng: 103.867,
         altName: "Angkor",
@@ -227,6 +279,15 @@ export const regionDetails: RegionDetail[] = [
         kicker: "928 – 944 CE",
         badge: "Angkor Period",
         name: "Lingapura",
+        verified: true,
+        quote: "Sixteen years, a seven-tier pyramid, then the forest.",
+        categories: ["Ancient Cities", "Temples"],
+        interests: ["Ancient Cities", "Archaeological Sites"],
+        location: "Koh Ker, Preah Vihear",
+        sources: [
+          { label: "Koh Ker \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Koh_Ker" },
+        ],
+        gallery: [img.ruinsTrees, img.ruins, img.statue, img.dirtRoad],
         lat: 13.7833,
         lng: 104.5333,
         altName: "Koh Ker",
@@ -244,6 +305,15 @@ export const regionDetails: RegionDetail[] = [
         kicker: "1528 – 1594 CE",
         badge: "Post-Angkor Period",
         name: "Longvek",
+        verified: true,
+        quote: "A river capital rich enough to be worth taking.",
+        categories: ["Ancient Cities"],
+        interests: ["Ancient Cities"],
+        location: "Longvek, Kampong Chhnang",
+        sources: [
+          { label: "Longvek \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Longvek" },
+        ],
+        gallery: [img.riverTrees, img.jungleVillage, img.riceAerial, img.paddy],
         lat: 11.8656,
         lng: 104.758,
         nameKh: "លង្វែក",
@@ -259,6 +329,15 @@ export const regionDetails: RegionDetail[] = [
         kicker: "1618 – 1866 CE",
         badge: "Post-Angkor Period",
         name: "Oudong",
+        verified: true,
+        quote: "Two and a half centuries of kings on a low ridge.",
+        categories: ["Ancient Cities", "Temples"],
+        interests: ["Ancient Cities", "Temples"],
+        location: "Phnom Oudong, Kandal",
+        sources: [
+          { label: "Oudong \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Oudong" },
+        ],
+        gallery: [img.paleStatue, img.monk, img.dirtRoad, img.riceAerial],
         lat: 11.7947,
         lng: 104.7685,
         nameKh: "ឧដុង្គ",
@@ -274,6 +353,15 @@ export const regionDetails: RegionDetail[] = [
         kicker: "1866 CE – present",
         badge: "Post-Angkor Period",
         name: "Chaktomuk",
+        verified: true,
+        quote: "Four rivers meet, and the capital comes home.",
+        categories: ["Ancient Cities", "Museums"],
+        interests: ["Ancient Cities", "Museums"],
+        location: "Phnom Penh",
+        sources: [
+          { label: "Phnom Penh \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Phnom_Penh" },
+        ],
+        gallery: [img.cityRiverNight, img.cityDay, img.civic, img.cityNight],
         lat: 11.5636,
         lng: 104.9312,
         altName: "Phnom Penh",

@@ -3,10 +3,15 @@ import Link from "next/link";
 import Form from "next/form";
 import type { Metadata } from "next";
 import { ArrowRightIcon, CompassIcon, SearchIcon } from "@/components/ui/icons";
-import { searchSite } from "@/lib/site-search";
+import { allHits, searchSite } from "@/lib/site-search";
 import type { SearchHit, SearchType } from "@/lib/site-search";
+import { INTERESTS, getInterest } from "@/lib/interests";
 
-type Params = Promise<{ q?: string | string[]; type?: string | string[] }>;
+type Params = Promise<{
+  q?: string | string[];
+  type?: string | string[];
+  interest?: string | string[];
+}>;
 
 const FILTERS: { id: "all" | SearchType; label: string }[] = [
   { id: "all", label: "All" },
@@ -47,8 +52,10 @@ function first(value: string | string[] | undefined) {
   return (Array.isArray(value) ? value[0] : value) ?? "";
 }
 
-function hrefFor(q: string, type?: string) {
-  const params = new URLSearchParams({ q });
+function hrefFor(q: string, type?: string, interest?: string) {
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (interest) params.set("interest", interest);
   if (type && type !== "all") params.set("type", type);
   return `/search?${params}`;
 }
@@ -58,8 +65,11 @@ export async function generateMetadata({
 }: {
   searchParams: Params;
 }): Promise<Metadata> {
-  const q = first((await searchParams).q).trim();
-  return { title: q ? `Search: ${q}` : "Search" };
+  const params = await searchParams;
+  const q = first(params.q).trim();
+  const interest = getInterest(first(params.interest));
+  if (q) return { title: `Search: ${q}` };
+  return { title: interest ? `${interest.name} in Cambodia` : "Search" };
 }
 
 export default async function SearchPage({
@@ -74,7 +84,12 @@ export default async function SearchPage({
     ? (requested as "all" | SearchType)
     : "all";
 
-  const hits = q ? searchSite(q) : [];
+  const interest = getInterest(first(params.interest));
+  // An interest on its own browses everything in it; with a word, it narrows.
+  const found = q ? searchSite(q) : interest ? allHits() : [];
+  const hits = interest
+    ? found.filter((hit) => hit.interests.includes(interest.id))
+    : found;
   const count = (id: "all" | SearchType) =>
     id === "all" ? hits.length : hits.filter((hit) => hit.types.includes(id)).length;
   const shown =
@@ -89,11 +104,17 @@ export default async function SearchPage({
         {q ? (
           <>
             Results for <span className="text-brand-700">“{q}”</span>
+            {interest ? <span className="text-sand-400"> in {interest.name}</span> : null}
           </>
+        ) : interest ? (
+          interest.name
         ) : (
           "Search all of Cambodia"
         )}
       </h1>
+      {interest && !q ? (
+        <p className="mt-3 max-w-2xl text-base text-sand-600">{interest.blurb}.</p>
+      ) : null}
 
       <Form
         action="/search"
@@ -119,7 +140,27 @@ export default async function SearchPage({
         </button>
       </Form>
 
-      {q ? (
+      <nav aria-label="Interests" className="mt-6 flex flex-wrap gap-2">
+        {INTERESTS.map((item) => {
+          const active = interest?.id === item.id;
+          return (
+            <Link
+              key={item.id}
+              href={active ? hrefFor(q) : hrefFor(q, undefined, item.id)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                active
+                  ? "bg-brand-700 text-white"
+                  : "bg-brand-50 text-brand-700 hover:bg-brand-100"
+              }`}
+            >
+              {item.name}
+              {active ? <span className="ml-1.5 text-white/70">×</span> : null}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {q || interest ? (
         <>
           {hits.length > 0 ? (
             <nav aria-label="Filter results" className="mt-8 flex flex-wrap gap-2">
@@ -129,7 +170,7 @@ export default async function SearchPage({
                   return (
                     <Link
                       key={filter.id}
-                      href={hrefFor(q, filter.id)}
+                      href={hrefFor(q, filter.id, interest?.id)}
                       scroll={false}
                       aria-current={active ? "page" : undefined}
                       className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
@@ -167,7 +208,7 @@ export default async function SearchPage({
           ) : (
             <div className="mt-10 rounded-3xl border border-dashed border-sand-300 bg-white px-6 py-14 text-center">
               <p className="font-display text-xl font-semibold text-sand-900">
-                Nothing matches “{q}” yet
+                {q ? `Nothing matches “${q}” yet` : `Nothing in ${interest?.name} yet`}
               </p>
               <p className="mx-auto mt-2 max-w-md text-sm text-sand-600">
                 Try a shorter or different word — a place, a province, a dish or

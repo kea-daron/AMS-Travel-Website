@@ -17,14 +17,22 @@ import {
   regionSpecialties,
   tourismRegions,
 } from "@/lib/data";
+import { INTERESTS } from "@/lib/interests";
 
-const modes = ["All", "By Tourism regions", "By Provinces", "By Corridors"] as const;
+const modes = [
+  "All",
+  "By Interests",
+  "By Tourism regions",
+  "By Provinces",
+  "By Corridors",
+] as const;
 
 type Mode = (typeof modes)[number];
 
 /** Phone-width labels, so all four tabs fit on one line. */
 const shortLabel: Record<Mode, string> = {
   All: "All",
+  "By Interests": "Interests",
   "By Tourism regions": "Regions",
   "By Provinces": "Provinces",
   "By Corridors": "Corridors",
@@ -42,8 +50,10 @@ export function SearchBar() {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("");
   const [corridor, setCorridor] = useState("");
+  const [interest, setInterest] = useState("");
 
   const byAll = mode === "All";
+  const byInterest = mode === "By Interests";
   const byRegion = mode === "By Tourism regions";
   const byCorridor = mode === "By Corridors";
 
@@ -54,6 +64,10 @@ export function SearchBar() {
     if (byAll) {
       const q = query.trim();
       router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
+      return;
+    }
+    if (byInterest) {
+      router.push(interest ? `/search?interest=${interest}` : "/search");
       return;
     }
     if (byCorridor) {
@@ -72,7 +86,7 @@ export function SearchBar() {
       <div
         role="tablist"
         aria-label="Discover by"
-        className="flex gap-1 overflow-x-auto px-2 pt-1.5 pb-3"
+        className="flex flex-wrap gap-1 px-2 pt-1.5 pb-3"
       >
         {modes.map((item) => (
           <button
@@ -110,6 +124,26 @@ export function SearchBar() {
                 placeholder="Temples, street food, homestays, Kampot…"
                 className={fieldClass}
               />
+            </span>
+          </label>
+        ) : byInterest ? (
+          <label className="flex items-center gap-3 bg-white px-4 py-3.5 md:col-span-2">
+            <CompassIcon className="size-5 shrink-0 text-brand-600" />
+            <span className="flex-1">
+              <span className={labelClass}>Interest</span>
+              <select
+                name="interest"
+                value={interest}
+                onChange={(event) => setInterest(event.target.value)}
+                className={fieldClass}
+              >
+                <option value="">All interests</option>
+                {INTERESTS.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
             </span>
           </label>
         ) : byCorridor ? (

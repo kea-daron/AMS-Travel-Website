@@ -8,6 +8,7 @@ import { ProfileForm } from "@/components/account/profile-form";
 import { AvatarEditor } from "@/components/account/avatar-editor";
 import { Badges } from "@/components/account/badges";
 import { History } from "@/components/account/history";
+import { HelpSupport } from "@/components/account/help-support";
 import type { HistoryItem } from "@/components/account/history";
 import { LoginRequired } from "@/components/auth/login-required";
 import {
@@ -402,6 +403,8 @@ export function AccountView({
               </p>
             </Card>
           </div>
+
+          <HelpSupport />
         </div>
       </div>
     </>

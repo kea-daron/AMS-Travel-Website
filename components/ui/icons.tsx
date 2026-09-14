@@ -569,3 +569,20 @@ export function StampIcon(props: IconProps) {
     </Outline>
   );
 }
+
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="m6 9 6 6 6-6" />
+    </Outline>
+  );
+}
+
+export function LinkIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1" />
+      <path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1" />
+    </Outline>
+  );
+}

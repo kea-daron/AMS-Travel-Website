@@ -7,7 +7,7 @@ import { SaveButton } from "@/components/saved/save-button";
 import { ShareButton } from "@/components/share/share-button";
 import { amenityIcon } from "@/components/stays/amenity-icons";
 import { ContactCard } from "@/components/stays/contact-card";
-import { RoomGallery } from "@/components/stays/room-gallery";
+import { PhotoGallery } from "@/components/ui/photo-gallery";
 import { TrackBrowse } from "@/components/account/track-browse";
 import {
   ArrowRightIcon,
@@ -89,7 +89,7 @@ export default async function RoomPage({ params }: { params: Params }) {
       </nav>
 
       <div className="mt-6">
-        <RoomGallery images={room.images} title={`${room.name} — ${stay.name}`} />
+        <PhotoGallery images={room.images} title={`${room.name} — ${stay.name}`} />
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-14">

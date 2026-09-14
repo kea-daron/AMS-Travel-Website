@@ -8,11 +8,11 @@ import { ArrowRightIcon, CloseIcon } from "@/components/ui/icons";
 const TILES = 5;
 
 /**
- * A room's photos: a mosaic on the page, and a full-screen viewer that opens
+ * A set of photos: a mosaic on the page, and a full-screen viewer that opens
  * on whichever photo was tapped. The viewer is a native modal <dialog>, so it
  * traps focus and closes on Escape by itself.
  */
-export function RoomGallery({
+export function PhotoGallery({
   images,
   title,
 }: {

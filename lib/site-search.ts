@@ -1,6 +1,8 @@
 import { corridors, provinces, tourismRegions } from "@/lib/data";
 import { coverageSlug, getRegionDestination, regionDetails } from "@/lib/regions";
 import type { RegionDestination } from "@/lib/regions";
+import { interestsFor } from "@/lib/interests";
+import type { InterestId } from "@/lib/interests";
 
 /**
  * Site-wide search: destinations (tagged as food, stays or places), regions,
@@ -19,6 +21,8 @@ export type SearchHit = {
   id: string;
   /** Destinations can be several at once — a homestay that serves food. */
   types: SearchType[];
+  /** The homepage interests this belongs to. */
+  interests: InterestId[];
   title: string;
   titleKh?: string;
   subtitle: string;
@@ -107,6 +111,7 @@ function entries(): Entry[] {
       list.push({
         id: `place:${region.slug}/${item.slug}`,
         types,
+        interests: interestsFor(item.category),
         title: item.name,
         titleKh: item.nameKh,
         subtitle: `${item.province} · ${region.name}`,
@@ -128,6 +133,7 @@ function entries(): Entry[] {
       list.push({
         id: `story:${region.slug}/${coverageSlug(step)}`,
         types: ["story"],
+        interests: [],
         title: step.altName ? `${step.name} · ${step.altName}` : step.name,
         titleKh: step.nameKh,
         subtitle: `${step.kicker} · ${region.coverageTitle ?? region.name}`,
@@ -147,6 +153,7 @@ function entries(): Entry[] {
     list.push({
       id: `region:${region.slug}`,
       types: ["region"],
+      interests: [],
       title: region.name,
       subtitle: region.blurb,
       label: "Tourism region",
@@ -160,6 +167,7 @@ function entries(): Entry[] {
     list.push({
       id: `province:${province.slug}`,
       types: ["province"],
+      interests: [],
       title: province.name,
       subtitle: province.highlight,
       label: "Province",
@@ -173,6 +181,7 @@ function entries(): Entry[] {
     list.push({
       id: `corridor:${corridor.slug}`,
       types: ["corridor"],
+      interests: ["corridors"],
       title: corridor.name,
       titleKh: corridor.nameKh,
       subtitle: corridor.stops.map((stop) => stop.name).join(" → "),
@@ -203,6 +212,17 @@ function getIndex() {
     },
   }));
   return index;
+}
+
+/** Everything on the site, for browsing an interest without a search word. */
+export function allHits(): SearchHit[] {
+  return getIndex()
+    .map((entry) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { fields, norm, boost, ...hit } = entry;
+      return { ...hit, score: boost ?? 0 };
+    })
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 }
 
 /**
