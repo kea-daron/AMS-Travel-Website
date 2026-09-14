@@ -98,6 +98,17 @@ export function summarise(reviews: Review[]) {
   return { count, average, breakdown, categories };
 }
 
+/** Every review this traveller has written, with the stay it belongs to. */
+export function useMyReviews(username: string | null) {
+  const all = useSyncExternalStore(subscribe, getAll, () => EMPTY);
+  if (!username) return [];
+  return Object.entries(all)
+    .flatMap(([stayKey, list]) =>
+      list.filter((review) => review.user === username).map((review) => ({ stayKey, review })),
+    )
+    .sort((a, b) => b.review.at - a.review.at);
+}
+
 /** How many reviews this traveller has written, across every stay. */
 export function useReviewCount(username: string | null) {
   const all = useSyncExternalStore(subscribe, getAll, () => EMPTY);

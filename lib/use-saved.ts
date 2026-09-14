@@ -3,6 +3,8 @@
 import { useCallback, useSyncExternalStore } from "react";
 
 const KEY = "ams-travel:saved";
+/** When each place was saved, for the history list. Kept alongside the list. */
+const TIMES_KEY = "ams-travel:saved-at";
 /** Fired on this tab; the native `storage` event only reaches other tabs. */
 const EVENT = "ams-travel:saved-change";
 
@@ -56,6 +58,31 @@ function subscribe(onChange: () => void) {
   };
 }
 
+function readTimes(): Record<string, number> {
+  try {
+    const parsed: unknown = JSON.parse(
+      window.localStorage.getItem(TIMES_KEY) ?? "{}",
+    );
+    return parsed && typeof parsed === "object"
+      ? (parsed as Record<string, number>)
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+/** Notes the moment a place was saved; forgets it when it is removed. */
+function stamp(added: string[], removed: string[]) {
+  try {
+    const times = readTimes();
+    for (const slug of added) times[slug] = Date.now();
+    for (const slug of removed) delete times[slug];
+    window.localStorage.setItem(TIMES_KEY, JSON.stringify(times));
+  } catch {
+    // Best effort: the list still works without the dates.
+  }
+}
+
 function write(next: string[]) {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(next));
@@ -68,7 +95,9 @@ function write(next: string[]) {
 /** Adds a place outside React — used to finish a save that waited on login. */
 export function addSaved(slug: string) {
   const current = parse(readRaw());
-  if (!current.includes(slug)) write([slug, ...current]);
+  if (current.includes(slug)) return;
+  stamp([slug], []);
+  write([slug, ...current]);
 }
 
 /**
@@ -81,6 +110,22 @@ export function addSaved(slug: string) {
  * TODO: move this to the account once auth exists, so a list follows the
  * traveller between devices instead of living in one browser.
  */
+/** When each saved place was added; missing for anything saved before dates were kept. */
+export function useSavedTimes() {
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => {
+      try {
+        return window.localStorage.getItem(TIMES_KEY);
+      } catch {
+        return null;
+      }
+    },
+    () => null,
+  );
+  return raw ? readTimes() : {};
+}
+
 export function useSaved() {
   const slugs = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const ready = useSyncExternalStore(
@@ -92,16 +137,25 @@ export function useSaved() {
   const toggle = useCallback((slug: string) => {
     const next = [...parse(readRaw())];
     const index = next.indexOf(slug);
-    if (index === -1) next.unshift(slug);
-    else next.splice(index, 1);
+    if (index === -1) {
+      next.unshift(slug);
+      stamp([slug], []);
+    } else {
+      next.splice(index, 1);
+      stamp([], [slug]);
+    }
     write(next);
   }, []);
 
   const remove = useCallback((slug: string) => {
+    stamp([], [slug]);
     write(parse(readRaw()).filter((item) => item !== slug));
   }, []);
 
-  const clear = useCallback(() => write([]), []);
+  const clear = useCallback(() => {
+    stamp([], parse(readRaw()));
+    write([]);
+  }, []);
 
   const isSaved = useCallback((slug: string) => slugs.includes(slug), [slugs]);
 

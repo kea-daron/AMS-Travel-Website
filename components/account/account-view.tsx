@@ -7,6 +7,8 @@ import type { ReactNode } from "react";
 import { ProfileForm } from "@/components/account/profile-form";
 import { AvatarEditor } from "@/components/account/avatar-editor";
 import { Badges } from "@/components/account/badges";
+import { History } from "@/components/account/history";
+import type { HistoryItem } from "@/components/account/history";
 import { LoginRequired } from "@/components/auth/login-required";
 import {
   ArrowRightIcon,
@@ -19,8 +21,8 @@ import {
 } from "@/components/ui/icons";
 import { useProfile } from "@/lib/use-profile";
 import type { Profile } from "@/lib/use-profile";
-import { useSaved } from "@/lib/use-saved";
-import { useReviewCount } from "@/lib/use-reviews";
+import { useSaved, useSavedTimes } from "@/lib/use-saved";
+import { useMyReviews, useReviewCount } from "@/lib/use-reviews";
 import { useBrowseCount } from "@/lib/use-browsed";
 import { useStamps } from "@/lib/use-stamps";
 import { buildBadges, topBadge } from "@/lib/badges";
@@ -41,6 +43,8 @@ export function AccountView({
 }) {
   const { user, ready: sessionReady } = useSession();
   const { slugs, ready } = useSaved();
+  const savedTimes = useSavedTimes();
+  const myReviews = useMyReviews(user?.name ?? null);
   const { profile, save } = useProfile(user?.name ?? null);
   const reviewCount = useReviewCount(user?.name ?? null);
   const browsed = useBrowseCount();
@@ -105,6 +109,33 @@ export function AccountView({
   const provinceCount = provinces.length;
   const mapOnly = saved.filter((place) => !place.region).length;
   const most = Math.max(1, ...perRegion.map((region) => region.count));
+
+  // Saves and reviews on one timeline, newest first.
+  const history: HistoryItem[] = [
+    ...groupSaved(slugs, places).map(({ place, keys }) => ({
+      id: `saved:${place.key}`,
+      kind: "saved" as const,
+      at: Math.max(...keys.map((key) => savedTimes[key] ?? 0)) || undefined,
+      name: place.name,
+      place: place.province,
+      href: place.href,
+      image: place.image,
+    })),
+    ...myReviews.map(({ stayKey, review }) => {
+      const stay = places.find((item) => item.key === stayKey);
+      return {
+        id: `review:${stayKey}`,
+        kind: "review" as const,
+        at: review.at,
+        name: stay?.name ?? stayKey,
+        place: stay?.province ?? "",
+        href: stay?.href ?? "/saved",
+        image: stay?.image,
+        rating: review.overall,
+        note: review.text,
+      };
+    }),
+  ].sort((a, b) => (b.at ?? 0) - (a.at ?? 0));
 
   const badges = buildBadges({
     browsed,
@@ -304,6 +335,8 @@ export function AccountView({
               </div>
             )}
           </Card>
+
+          <History items={history} />
 
           {/* Details */}
           <div ref={detailsRef} className="scroll-mt-28">
